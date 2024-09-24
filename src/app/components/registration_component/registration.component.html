@@ -1,0 +1,57 @@
+<div>
+  <h2>Register as {{ userType }}</h2>
+  <form [formGroup]="registrationForm" (ngSubmit)="onRegister()">
+    
+    <div>
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" placeholder="Enter email">
+      <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+        Invalid email address.
+      </div>
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input type="password" formControlName="password" placeholder="Enter password">
+      <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+        Password is required and must be at least 6 characters.
+      </div>
+    </div>
+
+    <!-- TruckingCompany specific fields -->
+    <div *ngIf="userType === 'TruckingCompany'">
+      <label for="companyName">Company Name</label>
+      <input type="text" formControlName="companyName" placeholder="Enter company name">
+      <div *ngIf="registrationForm.get('companyName')?.invalid && registrationForm.get('companyName')?.touched">
+        Company name is required.
+      </div>
+      
+      <label for="transportLicNo">Transport License No</label>
+      <input type="text" formControlName="transportLicNo" placeholder="Enter Transport License No">
+      
+      <label for="gstNo">GST No</label>
+      <input type="text" formControlName="gstNo" placeholder="Enter GST No">
+    </div>
+
+    <!-- Terminal specific fields -->
+    <div *ngIf="userType === 'Terminal'">
+      <label for="address">Address</label>
+      <input type="text" formControlName="address" placeholder="Enter Address">
+      
+      <label for="city">City</label>
+      <input type="text" formControlName="city" placeholder="Enter City">
+      
+      <label for="state">State</label>
+      <input type="text" formControlName="state" placeholder="Enter State">
+      
+      <label for="country">Country</label>
+      <input type="text" formControlName="country" placeholder="Enter Country">
+    </div>
+
+    <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+  </form>
+
+  <button (click)="onUserTypeChange('TruckingCompany')">Register as TruckingCompany</button>
+  <button (click)="onUserTypeChange('Terminal')">Register as Terminal</button>
+
+</div>

@@ -38,13 +38,15 @@ export class LoginComponent {
       const { email, password, userType } = this.loginForm.value;
       this.authService.login(email, password, userType).subscribe(
         (response: any) => {
-          console.log('Login successful', response);
-          this.router.navigate(['/employees']);  // Navigate to employees list after login
+          console.log('Login successful', response); // Check the structure here
+          localStorage.setItem('user', JSON.stringify(response));
+          this.router.navigate(['/dashboard']);
         },
         (error: any) => {
           console.error('Login failed', error);
         }
       );
+      
     }
   }
 }

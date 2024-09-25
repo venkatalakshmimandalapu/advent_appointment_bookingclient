@@ -88,10 +88,14 @@ export class RegistrationComponent implements OnInit {
       this.registrationService.registerTruckingCompany(formData).subscribe(
         response => {
           console.log('Trucking Company Registered Successfully', response);
+          // Store TrCompanyId in local storage
+          if (response.TrCompanyId) {
+            localStorage.setItem('TrCompanyId', response.TrCompanyId);
+          }
           this.router.navigate(['/login']); // Redirect to login page
         },
         error => {
-          console.error('Trucking Company Registration Failed', error.error);
+          console.error('Trucking Company Registration Failed', error);
         }
       );
     } else if (formData.userType === 'Terminal') {
@@ -101,7 +105,7 @@ export class RegistrationComponent implements OnInit {
           this.router.navigate(['/login']); // Redirect to login page
         },
         error => {
-          console.error('Terminal Registration Failed', error.error);
+          console.error('Terminal Registration Failed', error);
         }
       );
     }

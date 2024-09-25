@@ -8,13 +8,13 @@ import { catchError } from 'rxjs/operators';
 })
 export class RegistrationService {
 
-  private apiUrl = 'http://localhost:5232/api/registration';  // API endpoint for registration
+  private apiUrl = 'http://localhost:5232/api/registration'; // API endpoint for registration
 
   constructor(private http: HttpClient) {}
 
   // Register Trucking Company
   registerTruckingCompany(company: { TrCompanyName: string; Email: string; Password: string; GstNo?: string; TransportLicNo?: string; }): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = this.createAuthorizationHeader();
     return this.http.post(`${this.apiUrl}/truckingcompany`, company, { headers })
       .pipe(
         catchError((error) => {
@@ -26,7 +26,7 @@ export class RegistrationService {
 
   // Register Terminal
   registerTerminal(terminal: { PortName: string; Email: string; Password: string; Address: string; City: string; Country: string; State?: string; }): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = this.createAuthorizationHeader();
     return this.http.post(`${this.apiUrl}/terminal`, terminal, { headers })
       .pipe(
         catchError((error) => {
@@ -34,6 +34,16 @@ export class RegistrationService {
           return throwError(this.getErrorMessage(error));
         })
       );
+  }
+
+  // Create headers with JWT Bearer token
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token'); // Adjust based on where your token is stored
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
   }
 
   // Handle error messages from the API response

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Import Router
+import { ActivatedRoute, Router } from '@angular/router';
 import { DriverService } from '../../../services/driver.service';
 import { Driver } from '../../../models/Driver';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
+  imports:[CommonModule]
 })
 export class DriverDetailComponent implements OnInit {
   driverId!: number;
@@ -15,7 +17,7 @@ export class DriverDetailComponent implements OnInit {
   constructor(
     private driverService: DriverService,
     private route: ActivatedRoute,
-    private router: Router // Keep it private or change to public
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,12 +36,11 @@ export class DriverDetailComponent implements OnInit {
     );
   }
 
-  // Method to delete driver
   deleteDriver(driverId: number): void {
     this.driverService.deleteDriver(driverId).subscribe(
-      (response: string) => {
-        console.log('Driver deleted successfully:', response);
-        this.router.navigate(['/dashboard/drivers']); // Navigate after deletion
+      () => {
+        console.log('Driver deleted successfully');
+        this.router.navigate(['/dashboard/drivers']);
       },
       (error: any) => {
         console.error('Error deleting driver', error);
@@ -47,7 +48,6 @@ export class DriverDetailComponent implements OnInit {
     );
   }
 
-  // New method to navigate back (if using private router)
   navigateBack(): void {
     this.router.navigate(['/dashboard/drivers']);
   }

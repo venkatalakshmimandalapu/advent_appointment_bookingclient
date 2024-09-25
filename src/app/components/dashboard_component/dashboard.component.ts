@@ -23,26 +23,32 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // Check if running in the browser
         if (isPlatformBrowser(this.platformId)) {
             const userData = localStorage.getItem('user');
-            this.user = userData ? JSON.parse(userData) : null;
-
-            // Access user data correctly
-            if (this.user && this.user.data) {
-                this.user = this.user.data; // Now user is just the data object
-
-                // Determine user type
-                if (this.user.trCompanyName) {
-                    this.userType = 'TruckingCompany';
-                } else {
-                    this.userType = 'Terminal'; // Adjust as needed for other user types
+    
+            if (userData) {
+                console.log('Retrieved user data from localStorage:', userData);
+                try {
+                    const parsedData = JSON.parse(userData);
+                    // Directly assign parsedData to user
+                    this.user = parsedData; 
+                    this.userType = this.user.trCompanyName ? 'TruckingCompany' : 'Terminal';
+                } catch (error) {
+                    console.error('Failed to parse user data:', error);
+                    this.user = null; 
                 }
+            } else {
+                console.warn('No user data found in localStorage.');
+                this.user = null; 
             }
         } else {
             console.warn('localStorage is not available in this environment.');
+            this.user = null; 
         }
     }
+    
+    
+    
 
     // Method to navigate to the driver page
     goToDrivers() {

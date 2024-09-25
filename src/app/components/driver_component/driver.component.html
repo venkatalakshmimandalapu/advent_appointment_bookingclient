@@ -1,0 +1,60 @@
+<div class="driver-container">
+  <h2>Drivers</h2>
+  
+  <div *ngIf="drivers.length === 0">
+    No drivers available. Add a new driver below.
+  </div>
+
+  <table *ngIf="drivers.length > 0">
+    <thead>
+      <tr>
+        <th>Driver Name</th>
+        <th>Plate No</th>
+        <th>Phone Number</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let driver of drivers">
+        <td>{{ driver['driverName'] }}</td>
+        <td>{{ driver['plateNo'] }}</td>
+        <td>{{ driver['phoneNumber'] }}</td>
+        <td>
+          <button (click)="selectDriver(driver)">Edit</button>
+          <button (click)="deleteDriver(driver.driverId)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 *ngIf="selectedDriver">Edit Driver</h3>
+  <div *ngIf="selectedDriver">
+    <form (ngSubmit)="updateDriver()">
+      <label for="driverName">Driver Name:</label>
+      <input id="driverName" [(ngModel)]="selectedDriver.driverName" name="driverName" required />
+
+      <label for="plateNo">Plate No:</label>
+      <input id="plateNo" [(ngModel)]="selectedDriver.plateNo" name="plateNo" />
+
+      <label for="phoneNumber">Phone Number:</label>
+      <input id="phoneNumber" [(ngModel)]="selectedDriver.phoneNumber" name="phoneNumber" />
+
+      <button type="submit">Update</button>
+      <button type="button" (click)="resetSelection()">Cancel</button>
+    </form>
+  </div>
+
+  <h3>Add New Driver</h3>
+  <form (ngSubmit)="addDriver()">
+    <label for="newDriverName">Driver Name:</label>
+    <input id="newDriverName" [(ngModel)]="newDriver.driverName" name="driverName" required />
+
+    <label for="newPlateNo">Plate No:</label>
+    <input id="newPlateNo" [(ngModel)]="newDriver.plateNo" name="plateNo" />
+
+    <label for="newPhoneNumber">Phone Number:</label>
+    <input id="newPhoneNumber" [(ngModel)]="newDriver.phoneNumber" name="phoneNumber" />
+
+    <button type="submit">Add Driver</button>
+  </form>
+</div>

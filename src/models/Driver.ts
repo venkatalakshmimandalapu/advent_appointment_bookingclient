@@ -9,6 +9,7 @@ export class Driver {
     phoneNumber?: string;           // Corresponds to PhoneNumber (optional)
     truckingCompany?: TruckingCompany; // Corresponds to TruckingCompany (optional)
     appointments?: Appointment[];    // Corresponds to Appointments (optional)
+  static driverId: number;
 
     constructor(
         driverId: number,

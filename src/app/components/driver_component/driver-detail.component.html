@@ -1,19 +1,19 @@
 <div *ngIf="driver">
-    <h2>{{ driver.driverName }}'s Details</h2>
+  <h2>{{ driver.driverName }}'s Details</h2>
   
-    <div>
-      <label>Driver ID: </label> {{ driver.driverId }}
-    </div>
-    <div>
-      <label>Trucking Company ID: </label> {{ driver.trCompanyId }}
-    </div>
-    <div>
-      <label>Plate Number: </label> {{ driver.plateNo }}
-    </div>
-    <div>
-      <label>Phone Number: </label> {{ driver.phoneNumber }}
-    </div>
+  <!-- <div>
+    <label>Driver ID: </label> {{ driver.driverId }}
+  </div> -->
+  <div>
+    <label>Trucking Company ID: </label> {{ driver.trCompanyId }}
+  </div>
+  <div>
+    <label>Plate Number: </label> {{ driver.plateNo }}
+  </div>
+  <div>
+    <label>Phone Number: </label> {{ driver.phoneNumber }}
+  </div>
   
-    <button (click)="deleteDriver(driver.driverId)">Delete Driver</button>
-    <button (click)="navigateBack()">Back to Drivers</button> <!-- Update this line -->
+  <!-- <button (click)="deleteDriver(driver.driverId)">Delete Driver</button> -->
+  <button (click)="navigateBack()">Back to Drivers</button>
 </div>

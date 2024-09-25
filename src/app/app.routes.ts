@@ -3,7 +3,7 @@ import { HomeComponent } from './components/home_component/home.component';
 import { LoginComponent } from './components/login_component/login.component';
 import { RegistrationComponent } from './components/registration_component/registration.component';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './components/trucking_comp_dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard_component/dashboard.component';
 import { DriverComponent } from './components/driver_component/driver.component'; // Import DriverComponent
 import { DriverDetailComponent } from './components/driver_component/driver-detail.component'; // Import DriverDetailComponent
 

@@ -31,35 +31,29 @@ export class DriverComponent implements OnInit {
 
   ngOnInit() {
     console.log('OnInit called');
-    setTimeout(() => {
-      const companyId = this.getCompanyIdFromLocalStorage();
-      console.log('Company ID:', companyId);
-    }, 1000); // add a 1-second delay
     this.loadDrivers();
   }
 
   private loadDrivers() {
-    console.log('loadDrivers called'); // Log the call to loadDrivers
+    console.log('loadDrivers called'); 
 
     const companyId = this.getCompanyIdFromLocalStorage();
-    console.log('Company ID:', companyId); // Log the company ID
+    console.log('Company ID:', companyId); 
 
     if (companyId) {
-        console.log('Fetching drivers for Company ID:', companyId); // Log before making the API call
+        console.log('Fetching drivers for Company ID:', companyId); 
 
         this.driverService.getAllDrivers(companyId).subscribe({
             next: (data: Driver[]) => {
-                console.log('Drivers fetched:', data); // Log the fetched drivers
+                console.log('Drivers fetched:', data); 
                 this.drivers = data;
             },
             error: (err) => this.handleError('fetching drivers', err)
         });
     } else {
         console.error('No Company ID found. Cannot load drivers.');
-        // this.notificationService.add('Please log in to access driver information.');
     }
-}
-
+  }
 
   private getCompanyIdFromLocalStorage(): number | null {
     const userData = this.storageService.getItem('user');
@@ -79,8 +73,6 @@ export class DriverComponent implements OnInit {
     console.warn('No user data found in local storage');
     return null; 
   }
-  
-  
 
   addDriver() {
     if (this.driverForm.invalid) {
@@ -95,15 +87,18 @@ export class DriverComponent implements OnInit {
     }
 
     const newDriver: Driver = {
-        trCompanyId: companyId,
-        driverName: this.driverForm.value.driverName,
-        plateNo: this.driverForm.value.plateNo,
-        phoneNumber: this.driverForm.value.phoneNumber
+      trCompanyId: companyId,
+      driverName: this.driverForm.value.driverName,
+      plateNo: this.driverForm.value.plateNo,
+      phoneNumber: this.driverForm.value.phoneNumber,
+      driverId: function (driverId: any): void {
+        throw new Error('Function not implemented.');
+      }
     };
 
     this.driverService.createDriver(newDriver).subscribe({
         next: (data: Driver) => {
-            this.drivers.push(data);
+            this.drivers.push(data); // Add the new driver to the UI
             this.resetForm();
             console.log('Driver added successfully:', data);
         },
@@ -112,25 +107,25 @@ export class DriverComponent implements OnInit {
             this.handleError('adding driver', err);
         }
     });
-}
-
+  }
 
   private resetForm() {
     this.driverForm.reset();
   }
 
-  deleteDriver(driver: Driver) {
-    if (!driver || !driver.trCompanyId) return;
-
-    this.driverService.deleteDriver(driver.trCompanyId).subscribe({
+  deleteDriver(data: Driver) {
+    if (!data || typeof data.driverId !== 'number') return; // Ensure driverId is a number
+  
+    this.driverService.deleteDriver(Driver.driverId).subscribe({
         next: () => {
-            this.loadDrivers(); // Reload the drivers list
+            // Remove the deleted driver from the UI without reloading the entire list
+            this.drivers = this.drivers.filter(d => d.driverId !== data.driverId);
             console.log('Driver deleted successfully');
         },
         error: (err) => this.handleError('deleting driver', err)
     });
   }
-
+  
 
   private handleError(action: string, error: any) {
     console.error(`Error ${action}:`, error);

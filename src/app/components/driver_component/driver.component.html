@@ -1,32 +1,39 @@
-<!-- <div>
-  <h1>Drivers</h1>
-  <form [formGroup]="driverForm" (ngSubmit)="addDriver()">
-    <input formControlName="driverName" placeholder="Driver Name" required />
-    <input formControlName="plateNo" placeholder="Plate No" required />
-    <input formControlName="phoneNumber" placeholder="Phone Number" required />
-    <button type="submit">Add Driver</button>
-  </form>
-
-  <ul>
-    <li *ngFor="let driver of drivers">
-      {{ driver.driverName }} - {{ driver.plateNo }}
-      <button (click)="deleteDriver(driver)">Delete</button>
-    </li>
-  </ul>
-</div> -->
 <div>
-  <h1>Drivers</h1>
-  <form [formGroup]="driverForm" (ngSubmit)="addDriver()">
-    <input formControlName="driverName" placeholder="Driver Name" required />
-    <input formControlName="plateNo" placeholder="Plate No" required />
-    <input formControlName="phoneNumber" placeholder="Phone Number" required />
-    <button type="submit">Add Driver</button>
-  </form>
-
+  <h2>Drivers List</h2>
   <ul>
     <li *ngFor="let driver of drivers">
-      {{ driver.driverName }} - {{ driver.plateNo }}
-      <button (click)="deleteDriver(driver)">Delete</button>
+      {{ driver.driverName }} ({{ driver.plateNo }}) - {{ driver.phoneNumber }}
+      <button (click)="editDriver(driver)">Edit</button>
+      <button (click)="deleteDriver(driver.driverId)">Delete</button>
     </li>
   </ul>
+
+  <div *ngIf="editingDriverId !== null">
+    <h3>Edit Driver</h3>
+  </div>
+  <div *ngIf="editingDriverId === null">
+    <h3>Add New Driver</h3>
+  </div>
+
+  <form [formGroup]="driverForm" (ngSubmit)="editingDriverId ? updateDriver() : addDriver()">
+    <div>
+      <label for="driverName">Driver Name</label>
+      <input id="driverName" formControlName="driverName" />
+    </div>
+
+    <div>
+      <label for="plateNo">Plate Number</label>
+      <input id="plateNo" formControlName="plateNo" />
+    </div>
+
+    <div>
+      <label for="phoneNumber">Phone Number</label>
+      <input id="phoneNumber" formControlName="phoneNumber" />
+    </div>
+
+    <button type="submit" [disabled]="driverForm.invalid">
+      {{ editingDriverId !== null ? 'Update Driver' : 'Add Driver' }}
+    </button>
+    <button type="button" (click)="resetForm()">Cancel</button>
+  </form>
 </div>

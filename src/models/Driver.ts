@@ -2,6 +2,10 @@ import { Appointment } from "./Appointment";
 import { TruckingCompany } from "./TruckingCompany";
 
 export class Driver {
+    static driverId: number;
+    driverId(driverId: any) {
+      throw new Error('Method not implemented.');
+    }
     trCompanyId: number;            // Corresponds to TrCompanyId
     driverName: string;             // Corresponds to DriverName
     plateNo?: string;               // Corresponds to PlateNo (optional)

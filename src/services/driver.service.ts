@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Driver } from '../models/Driver';
-import { StorageService } from './storage.service'; // Import the StorageService
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,6 @@ export class DriverService {
     console.log('Retrieved Token:', token); // Debug token retrieval
     if (token) {
       headers = headers.set('Authorization', `Bearer ${token}`);
-      console.log('Headers:', headers.keys(), headers.get('Authorization')); // Debug headers
     }
     return headers;
   }
@@ -28,7 +27,6 @@ export class DriverService {
   // Fetch all drivers
   getAllDrivers(companyId: number): Observable<Driver[]> {
     const headers = this.createAuthorizationHeader();
-    // Pass companyId as a query parameter
     return this.http.get<Driver[]>(`${this.apiUrl}?companyId=${companyId}`, { headers }).pipe(
       catchError(this.handleError)
     );

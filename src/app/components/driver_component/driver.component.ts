@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { DriverService } from '../../../services/driver.service';
 import { Driver } from '../../../models/Driver';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-driver',
   templateUrl: './driver.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule]
+  imports: [ReactiveFormsModule, CommonModule, RouterModule]
 })
 export class DriverComponent implements OnInit {
   drivers: Driver[] = [];
   driverForm: FormGroup;
+  editingDriverId: number | null = null; // To track the driver being edited
 
   constructor(
     private driverService: DriverService,
@@ -22,112 +23,125 @@ export class DriverComponent implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    // Initialize the form with validators
     this.driverForm = this.fb.group({
       driverName: ['', Validators.required],
       plateNo: ['', Validators.required],
-      phoneNumber: ['', Validators.required]
+      phoneNumber: ['', Validators.required],
     });
   }
 
-  ngOnInit() {
-    console.log('OnInit called');
+  ngOnInit(): void {
     this.loadDrivers();
   }
 
-  private loadDrivers() {
-    console.log('loadDrivers called'); 
-
+  // Load all drivers for the logged-in trucking company
+  loadDrivers(): void {
     const companyId = this.getCompanyIdFromLocalStorage();
-    console.log('Company ID:', companyId); 
-
     if (companyId) {
-        console.log('Fetching drivers for Company ID:', companyId); 
-
-        this.driverService.getAllDrivers(companyId).subscribe({
-            next: (data: Driver[]) => {
-                console.log('Drivers fetched:', data); 
-                this.drivers = data;
-            },
-            error: (err) => this.handleError('fetching drivers', err)
-        });
+      this.driverService.getAllDrivers(companyId).subscribe({
+        next: (data: Driver[]) => {
+          this.drivers = data;
+        },
+        error: (err) => this.handleError('loading drivers', err),
+      });
     } else {
-        console.error('No Company ID found. Cannot load drivers.');
+      console.error('No company ID found.');
     }
   }
 
+  // Get company ID from local storage
   private getCompanyIdFromLocalStorage(): number | null {
     const userData = this.storageService.getItem('user');
-    
     if (userData) {
       try {
         const parsedData = JSON.parse(userData);
-        console.log('Parsed user data:', parsedData);
-        const companyId = parsedData.trCompanyId || null; 
-        console.log('Extracted Company ID:', companyId);
-        return companyId; 
+        return parsedData.trCompanyId || null;
       } catch (error) {
-        console.error('Error parsing user data from local storage:', error);
+        console.error('Error parsing user data:', error);
         return null;
       }
     }
-    console.warn('No user data found in local storage');
-    return null; 
+    return null;
   }
 
-  addDriver() {
-    if (this.driverForm.invalid) {
-        console.warn('Driver form is invalid.');
-        return;
-    }
+  // Add a new driver
+  addDriver(): void {
+    if (this.driverForm.invalid) return;
 
     const companyId = this.getCompanyIdFromLocalStorage();
     if (!companyId) {
-        console.error('No Company ID found. Cannot add driver.');
-        return;
+      console.error('No company ID found. Cannot add driver.');
+      return;
     }
 
     const newDriver: Driver = {
+      driverId: 0, // Set to 0 or null for new driver creation
       trCompanyId: companyId,
       driverName: this.driverForm.value.driverName,
       plateNo: this.driverForm.value.plateNo,
       phoneNumber: this.driverForm.value.phoneNumber,
-      driverId: function (driverId: any): void {
-        throw new Error('Function not implemented.');
-      }
     };
 
     this.driverService.createDriver(newDriver).subscribe({
-        next: (data: Driver) => {
-            this.drivers.push(data); // Add the new driver to the UI
-            this.resetForm();
-            console.log('Driver added successfully:', data);
-        },
-        error: (err) => {
-            console.error('Error adding driver:', err);
-            this.handleError('adding driver', err);
-        }
+      next: (driver: Driver) => {
+        this.drivers.push(driver); // Add new driver to the list
+        this.resetForm();
+      },
+      error: (err) => this.handleError('adding driver', err),
     });
   }
 
-  private resetForm() {
+  // Edit an existing driver
+  editDriver(driver: Driver): void {
+    this.editingDriverId = driver.driverId;
+    this.driverForm.patchValue({
+      driverName: driver.driverName,
+      plateNo: driver.plateNo,
+      phoneNumber: driver.phoneNumber,
+    });
+  }
+
+  // Update the edited driver
+  updateDriver(): void {
+    if (this.driverForm.invalid || this.editingDriverId === null) return;
+
+    const updatedDriver: Driver = {
+      driverId: this.editingDriverId,
+      trCompanyId: this.getCompanyIdFromLocalStorage()!,
+      driverName: this.driverForm.value.driverName,
+      plateNo: this.driverForm.value.plateNo,
+      phoneNumber: this.driverForm.value.phoneNumber,
+    };
+
+    this.driverService.updateDriver(this.editingDriverId, updatedDriver).subscribe({
+      next: () => {
+        this.loadDrivers(); // Reload the drivers list
+        this.resetForm();
+        this.editingDriverId = null; // Clear the editing state
+      },
+      error: (err) => this.handleError('updating driver', err),
+    });
+  }
+
+  // Delete a driver
+  deleteDriver(driverId: number): void {
+    this.driverService.deleteDriver(driverId).subscribe({
+      next: () => {
+        this.drivers = this.drivers.filter((driver) => driver.driverId !== driverId); // Remove from list
+      },
+      error: (err) => this.handleError('deleting driver', err),
+    });
+  }
+
+  // Reset the form after submission
+  resetForm(): void {
     this.driverForm.reset();
+    this.editingDriverId = null;
   }
 
-  deleteDriver(data: Driver) {
-    if (!data || typeof data.driverId !== 'number') return; // Ensure driverId is a number
-  
-    this.driverService.deleteDriver(Driver.driverId).subscribe({
-        next: () => {
-            // Remove the deleted driver from the UI without reloading the entire list
-            this.drivers = this.drivers.filter(d => d.driverId !== data.driverId);
-            console.log('Driver deleted successfully');
-        },
-        error: (err) => this.handleError('deleting driver', err)
-    });
-  }
-  
-
-  private handleError(action: string, error: any) {
+  // Handle errors
+  private handleError(action: string, error: any): void {
     console.error(`Error ${action}:`, error);
   }
 }

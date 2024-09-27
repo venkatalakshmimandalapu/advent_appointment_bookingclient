@@ -38,9 +38,12 @@ export class DriverComponent implements OnInit {
   // Load all drivers for the logged-in trucking company
   loadDrivers(): void {
     const companyId = this.getCompanyIdFromLocalStorage();
+    console.log('Fetching drivers for Company ID:', companyId); // Debugging line
+    
     if (companyId) {
       this.driverService.getAllDrivers(companyId).subscribe({
         next: (data: Driver[]) => {
+          console.log('Drivers fetched:', data); // Log fetched drivers
           this.drivers = data;
         },
         error: (err) => this.handleError('loading drivers', err),
@@ -129,6 +132,7 @@ export class DriverComponent implements OnInit {
     this.driverService.deleteDriver(driverId).subscribe({
       next: () => {
         this.drivers = this.drivers.filter((driver) => driver.driverId !== driverId); // Remove from list
+        console.log('Driver deleted successfully'); // Debugging line
       },
       error: (err) => this.handleError('deleting driver', err),
     });

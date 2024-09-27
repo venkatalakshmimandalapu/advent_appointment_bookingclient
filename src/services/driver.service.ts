@@ -27,7 +27,7 @@ export class DriverService {
   // Fetch all drivers
   getAllDrivers(companyId: number): Observable<Driver[]> {
     const headers = this.createAuthorizationHeader();
-    return this.http.get<Driver[]>(`${this.apiUrl}?companyId=${companyId}`, { headers }).pipe(
+    return this.http.get<Driver[]>(`${this.apiUrl}/trCompanyId/${companyId}`, { headers }).pipe(
       catchError(this.handleError)
     );
   }

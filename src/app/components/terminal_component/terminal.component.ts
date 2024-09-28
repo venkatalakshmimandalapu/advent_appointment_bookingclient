@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { AppointmentService } from '../../../services/appointment.service';
 import { Appointment } from '../../../models/Appointment';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { StorageService } from '../../../services/storage.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-terminal',
@@ -10,10 +12,11 @@ import { StorageService } from '../../../services/storage.service';
   standalone: true,
   imports: [CommonModule]
 })
-export class TerminalComponent implements OnInit {
+export class TerminalComponent implements OnInit, OnDestroy {
   appointments: Appointment[] = [];
   isLoading: boolean = false;
   errorMessage: string | null = null;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private appointmentService: AppointmentService,
@@ -22,33 +25,30 @@ export class TerminalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getTerminalAppointments();
+    this.getAppointments();
   }
 
-  getTerminalAppointments(): void {
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getAppointments(): void {
     this.isLoading = true;
 
-    // Check if running in the browser
     if (isPlatformBrowser(this.platformId)) {
       const userData = this.storageService.getItem('user');
       if (userData) {
-        const { terminalId } = JSON.parse(userData);
-        console.log(userData);
-        this.appointmentService.getAppointmentsByTerminal(terminalId).subscribe(
+        const { trCompanyId } = JSON.parse(userData);
+        this.appointmentService.getAppointments(trCompanyId)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(
             (data) => {
-              this.appointments = data;
-              console.log('Fetched terminal appointments:', this.appointments);
+              this.appointments = data.filter(appointment => !appointment.isDeleted);
               this.isLoading = false;
             },
-            (error) => {
-              console.error('Error fetching terminal appointments', error);
-              console.error('Error details:', error.error); // Log error details
-              this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
-              this.isLoading = false;
-            }
+            (error) => this.handleError(error)
           );
-          
-          
       } else {
         console.error('No user data found in localStorage');
         this.isLoading = false;
@@ -57,5 +57,61 @@ export class TerminalComponent implements OnInit {
       console.error('localStorage is not available');
       this.isLoading = false;
     }
+  }
+
+  acceptAppointment(appointmentId: number): void {
+    this.isLoading = true;
+    const appointment = this.appointments.find(a => a.appointmentId === appointmentId);
+    
+    if (appointment) {
+      const originalStatus = appointment.status; // Store original status
+      appointment.status = 'approved'; // Optimistically update
+
+      this.appointmentService.updateAppointmentStatus(appointmentId, 'approved')
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (response) => {
+            console.log('Appointment approved:', response);
+            this.getAppointments(); // Refresh appointments
+          },
+          (error) => {
+            console.error('Error approving appointment', error);
+            this.handleError(error);
+            appointment.status = originalStatus; // Restore original status
+          }
+        );
+    }
+  }
+
+  // Rename this method to cancelAppointment if it's meant to cancel appointments
+  cancelAppointment(appointmentId: number): void {
+    this.isLoading = true;
+
+    this.appointmentService.updateAppointmentStatus(appointmentId, 'canceled') // Ensure this status is correct
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+            (response) => {
+                console.log('Appointment canceled:', response);
+                // Handle successful cancellation
+                this.isLoading = false;
+            },
+            (error) => {
+                console.error('Error canceling appointment', error);
+                this.handleError(error);
+                this.isLoading = false;
+            }
+        );
+}
+
+
+  private handleError(error: any): void {
+    if (error?.status === 403) {
+      this.errorMessage = 'You do not have permission to perform this action.';
+    } else if (error?.status === 404) {
+      this.errorMessage = 'Appointment not found.';
+    } else {
+      this.errorMessage = error?.error?.message || 'An unexpected error occurred.';
+    }
+    this.isLoading = false;
   }
 }

@@ -12,7 +12,7 @@
                 <th>Size Type</th>
                 <th>Line</th>
                 <th>Chassis No</th>
-                <th>Status</th>
+                <!-- <th>Status</th> -->
                 <th>Gate Code</th>
                 <th>Appointment ID</th>
             </tr>
@@ -24,9 +24,13 @@
                 <td>{{ appointment.sizeType }}</td>
                 <td>{{ appointment.line }}</td>
                 <td>{{ appointment.chassisNo }}</td>
-                <td>{{ appointment.appointmentStatus }}</td>
+                <!-- <td>{{ appointment.appointmentStatus }}</td> -->
                 <td>{{ appointment.gateCode }}</td>
                 <td>{{ appointment.appointmentId }}</td>
+                <td>
+                    <button (click)="acceptAppointment(appointment.appointmentId)">Accept</button>
+                    <button (click)="cancelAppointment(appointment.appointmentId)">Delete</button>
+                </td>
             </tr>
         </tbody>
     </table>

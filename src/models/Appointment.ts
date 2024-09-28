@@ -13,4 +13,6 @@ export interface Appointment {
     appointmentValidThrough: Date;
     appointmentLastModified: Date;
     gateCode: string;
+    isDeleted?: boolean;
+    status?: string;
 }

@@ -57,6 +57,6 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/appointments/view']);
     }
     ViewAppointmentsTerminal(){
-        this.router.navigate(['/appointments/view'])
+        this.router.navigate(['terminal/appointments'])
     }
 }

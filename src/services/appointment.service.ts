@@ -8,7 +8,6 @@ import { Appointment } from '../models/Appointment';
   providedIn: 'root'
 })
 export class AppointmentService {
-  [x: string]: any;
   private apiUrl = 'http://localhost:5232/api/appointment';
 
   constructor(
@@ -27,29 +26,36 @@ export class AppointmentService {
     return headers;
   }
 
-  // Create appointment
   createAppointment(appointment: Appointment): Observable<any> {
     return this.http.post(`${this.apiUrl}/create`, appointment, { headers: this.getHeaders() });
   }
-  
 
-  // Get all appointments
   getAppointments(trCompanyId: number): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.apiUrl}/get-all`, { headers: this.getHeaders() });
   }
 
-  // Update appointment
   updateAppointment(appointmentId: number, appointment: Appointment): Observable<any> {
     return this.http.put(`${this.apiUrl}/update/${appointmentId}`, appointment, { headers: this.getHeaders() });
   }
 
-  // Delete appointment
   deleteAppointment(appointmentId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${appointmentId}`, { headers: this.getHeaders() });
   }
+
+
   getAppointmentsByTerminal(terminalId: number): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`/api/appointments/terminal/${terminalId}`);
+  }
+
+  updateAppointmentStatus(appointmentId: number, status: string): Observable<any> {
+    const endpoint = status === 'approved' 
+        ? `${this.apiUrl}/approve/${appointmentId}`
+        : `${this.apiUrl}/cancel/${appointmentId}`; // This should match your backend
+
+    return this.http.put(endpoint, {}, { headers: this.getHeaders() });
 }
 
-
+  
+    
+    
 }

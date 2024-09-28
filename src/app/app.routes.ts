@@ -24,3 +24,4 @@ export const routes: Routes = [
   {path:'terminal/appointments',component:TerminalComponent},
   { path: '**', redirectTo: '' } // Redirect any unknown route to home
 ];
+

@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationService } from '../../../services/registration.service';
-import { Router } from '@angular/router'; // Import Router
+import { Router, RouterLink } from '@angular/router'; // Import Router
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, RouterLink]
 })
 export class RegistrationComponent implements OnInit {
   registrationForm!: FormGroup;

@@ -1,48 +1,32 @@
-<div class="login-container">
-    <h2>Login</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <!-- Email Input -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="Enter your email" />
-        <!-- Email Validation Errors -->
-        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-message">
-          <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</small>
-          <small *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format.</small>
-        </div>
-      </div>
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <h2>LOGIN</h2>
   
-      <!-- Password Input -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Enter your password" />
-        <!-- Password Validation Errors -->
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
-          <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
-        </div>
-      </div>
-  
-      <!-- User Type Selection -->
-      <div class="form-group">
-        <label for="userType">User Type</label>
-        <select id="userType" formControlName="userType">
-          <option value="" disabled>Select User Type</option>
-          <option value="TruckingCompany">Trucking Company</option>
-          <option value="Terminal">Terminal</option>
-        </select>
-        <!-- User Type Validation Errors -->
-        <div *ngIf="loginForm.get('userType')?.invalid && loginForm.get('userType')?.touched" class="error-message">
-          <small>User Type is required.</small>
-        </div>
-      </div>
-  
-      <!-- Submit Button -->
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
-    </form>
-  
-    <!-- Error Message -->
-    <div *ngIf="loginForm.invalid && loginForm.touched" class="error-message">
-      <p>Please ensure all fields are filled out correctly.</p>
-    </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" placeholder="Enter your email">
   </div>
   
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" formControlName="password" placeholder="Enter your password">
+  </div>
+
+  <div class="form-group">
+    <label for="userType">User Type</label>
+    <select id="userType" formControlName="userType">
+      <option value="">Select User Type</option>
+      <option value="TruckingCompany">Trucking Company</option>
+      <option value="Terminal">Terminal</option>
+    </select>
+  </div>
+
+  <button type="submit" class="submit-button" [disabled]="loading || loginForm.invalid">
+    <span *ngIf="loading">Loading...</span>
+    <span *ngIf="!loading">LOGIN</span>
+  </button>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <p>New user?
+     <a [routerLink]="['/registration']">Register</a></p>
+</form>

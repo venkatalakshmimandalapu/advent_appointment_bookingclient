@@ -1,82 +1,92 @@
-<div>
+<div class="registration-container">
   <h2>Register as {{ userType }}</h2>
   <form [formGroup]="registrationForm" (ngSubmit)="onRegister()">
 
-    <div>
+    <!-- Email Input -->
+    <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" formControlName="email" placeholder="Enter email">
-      <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+      <input id="email" type="email" formControlName="email" placeholder="Enter email">
+      <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" class="error-message">
         Invalid email address.
       </div>
     </div>
 
-    <div>
+    <!-- Password Input -->
+    <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" formControlName="password" placeholder="Enter password">
-      <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+      <input id="password" type="password" formControlName="password" placeholder="Enter password">
+      <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" class="error-message">
         Password is required and must be at least 6 characters.
       </div>
     </div>
 
-    <!-- TruckingCompany specific fields -->
-    <div *ngIf="userType === 'TruckingCompany'">
+    <!-- TruckingCompany Specific Fields -->
+    <div *ngIf="userType === 'TruckingCompany'" class="form-group">
       <label for="TrCompanyName">Company Name</label>
-      <input type="text" formControlName="TrCompanyName" placeholder="Enter company name">
-      <div *ngIf="registrationForm.get('TrCompanyName')?.invalid && registrationForm.get('TrCompanyName')?.touched">
+      <input id="TrCompanyName" type="text" formControlName="TrCompanyName" placeholder="Enter company name">
+      <div *ngIf="registrationForm.get('TrCompanyName')?.invalid && registrationForm.get('TrCompanyName')?.touched" class="error-message">
         Company name is required.
       </div>
       
       <label for="transportLicNo">Transport License No</label>
-      <input type="text" formControlName="transportLicNo" placeholder="Enter Transport License No">
-      <div *ngIf="registrationForm.get('transportLicNo')?.invalid && registrationForm.get('transportLicNo')?.touched">
+      <input id="transportLicNo" type="text" formControlName="transportLicNo" placeholder="Enter Transport License No">
+      <div *ngIf="registrationForm.get('transportLicNo')?.invalid && registrationForm.get('transportLicNo')?.touched" class="error-message">
         Transport License No is required.
       </div>
 
       <label for="gstNo">GST No</label>
-      <input type="text" formControlName="gstNo" placeholder="Enter GST No">
-      <div *ngIf="registrationForm.get('gstNo')?.invalid && registrationForm.get('gstNo')?.touched">
+      <input id="gstNo" type="text" formControlName="gstNo" placeholder="Enter GST No">
+      <div *ngIf="registrationForm.get('gstNo')?.invalid && registrationForm.get('gstNo')?.touched" class="error-message">
         GST No is required.
       </div>
     </div>
 
-    <!-- Terminal specific fields -->
-    <div *ngIf="userType === 'Terminal'">
+    <!-- Terminal Specific Fields -->
+    <div *ngIf="userType === 'Terminal'" class="form-group">
       <label for="portName">Port Name</label>
-      <input type="text" formControlName="portName" placeholder="Enter Port Name">
-      <div *ngIf="registrationForm.get('portName')?.invalid && registrationForm.get('portName')?.touched">
+      <input id="portName" type="text" formControlName="portName" placeholder="Enter Port Name">
+      <div *ngIf="registrationForm.get('portName')?.invalid && registrationForm.get('portName')?.touched" class="error-message">
         Port Name is required.
       </div>
 
       <label for="address">Address</label>
-      <input type="text" formControlName="address" placeholder="Enter Address">
-      <div *ngIf="registrationForm.get('address')?.invalid && registrationForm.get('address')?.touched">
+      <input id="address" type="text" formControlName="address" placeholder="Enter Address">
+      <div *ngIf="registrationForm.get('address')?.invalid && registrationForm.get('address')?.touched" class="error-message">
         Address is required.
       </div>
 
       <label for="city">City</label>
-      <input type="text" formControlName="city" placeholder="Enter City">
-      <div *ngIf="registrationForm.get('city')?.invalid && registrationForm.get('city')?.touched">
+      <input id="city" type="text" formControlName="city" placeholder="Enter City">
+      <div *ngIf="registrationForm.get('city')?.invalid && registrationForm.get('city')?.touched" class="error-message">
         City is required.
       </div>
 
       <label for="state">State</label>
-      <input type="text" formControlName="state" placeholder="Enter State">
-      <div *ngIf="registrationForm.get('state')?.invalid && registrationForm.get('state')?.touched">
+      <input id="state" type="text" formControlName="state" placeholder="Enter State">
+      <div *ngIf="registrationForm.get('state')?.invalid && registrationForm.get('state')?.touched" class="error-message">
         State is required.
       </div>
 
       <label for="country">Country</label>
-      <input type="text" formControlName="country" placeholder="Enter Country">
-      <div *ngIf="registrationForm.get('country')?.invalid && registrationForm.get('country')?.touched">
+      <input id="country" type="text" formControlName="country" placeholder="Enter Country">
+      <div *ngIf="registrationForm.get('country')?.invalid && registrationForm.get('country')?.touched" class="error-message">
         Country is required.
       </div>
     </div>
 
-    <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+    <button type="submit" [disabled]="registrationForm.invalid" class="submit-button">Register</button>
   </form>
 
-  <div>
+  <!-- User Type Buttons -->
+  <div class="user-type-buttons">
     <button (click)="onUserTypeChange('TruckingCompany')">Register as Trucking Company</button>
     <button (click)="onUserTypeChange('Terminal')">Register as Terminal</button>
+  </div>
+
+  <!-- Login Option -->
+  <div class="login-option">
+    <p>Already have an account? 
+    <a [routerLink] = "['/login']">Login here</a>
+    </p>
   </div>
 </div>

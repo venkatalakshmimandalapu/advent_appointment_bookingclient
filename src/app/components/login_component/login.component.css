@@ -1,0 +1,115 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure the background covers the entire page */
+html, body {
+    height: 100%; /* Ensure the height covers the entire viewport */
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url(../../../assets/images/loginpage.jpg);
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the image covers the entire page */
+    background-position: center; /* Centers the background image */
+    background-attachment: fixed; /* Makes the background fixed */
+}
+
+/* Login Container */
+.login-container {
+    max-width: 400px;
+    margin: 0 auto; /* Center the container horizontally */
+    margin-right: 50px; /* Adds space on the right */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%); /* Vertically centers the container */
+}
+
+/* Header */
+.login-container h2 {
+    font-size: 2.5rem;
+    color: red;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Submit Button */
+.submit-button {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+}
+
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.submit-button:hover {
+    background-color: red;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+    }
+
+    .login-container h2 {
+        font-size: 2rem;
+    }
+}

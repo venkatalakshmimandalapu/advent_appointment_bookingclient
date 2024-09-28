@@ -1,0 +1,1 @@
+AdventEmodal logo current link:   	https://www.adventemodal.com/uploads/1/3/4/4/13443…hed/advent-emodal-horizontal-color.png?1604460410

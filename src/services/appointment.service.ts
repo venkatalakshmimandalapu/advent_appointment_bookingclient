@@ -8,6 +8,7 @@ import { Appointment } from '../models/Appointment';
   providedIn: 'root'
 })
 export class AppointmentService {
+  [x: string]: any;
   private apiUrl = 'http://localhost:5232/api/appointment';
 
   constructor(
@@ -46,4 +47,9 @@ export class AppointmentService {
   deleteAppointment(appointmentId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${appointmentId}`, { headers: this.getHeaders() });
   }
+  getAppointmentsByTerminal(terminalId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`/api/appointments/terminal/${terminalId}`);
+}
+
+
 }

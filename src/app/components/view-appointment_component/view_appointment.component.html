@@ -1,0 +1,43 @@
+<div class="appointment-container">
+    <h2>Existing Appointments</h2>
+
+    <div *ngIf="isLoading">Loading appointments...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <table *ngIf="!isLoading && !errorMessage">
+        <thead>
+            <tr>
+                <!-- <th>Company ID</th>
+                <th>Terminal ID</th>
+                <th>Driver ID</th> -->
+                <th>Move Type</th>
+                <th>Container Number</th>
+                <th>Size Type</th>
+                <th>Line</th>
+                <th>Chassis No</th>
+                <th>Status</th>
+                <th>Gate Code</th>
+                <th>Appointment ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of appointments">
+                <!-- <td>{{ appointment.trCompanyId }}</td>
+                <td>{{ appointment.terminalId }}</td>
+                <td>{{ appointment.driverId }}</td> -->
+                <td>{{ appointment.moveType }}</td>
+                <td>{{ appointment.containerNumber }}</td>
+                <td>{{ appointment.sizeType }}</td>
+                <td>{{ appointment.line }}</td>
+                <td>{{ appointment.chassisNo }}</td>
+                <td>{{ appointment.appointmentStatus }}</td>
+                <td>{{ appointment.gateCode }}</td>
+                <td>{{ appointment.appointmentId }}</td>
+                <td>
+                    <button (click)="deleteAppointment(appointment.appointmentId)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

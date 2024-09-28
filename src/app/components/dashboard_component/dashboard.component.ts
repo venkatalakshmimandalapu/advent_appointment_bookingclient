@@ -53,4 +53,10 @@ export class DashboardComponent implements OnInit {
     createAppointment() {
         this.router.navigate(['/appointments/create']); // Adjust the path based on your routing setup
     }
+    viewAppointments(){
+        this.router.navigate(['/appointments/view']);
+    }
+    ViewAppointmentsTerminal(){
+        this.router.navigate(['/appointments/view'])
+    }
 }

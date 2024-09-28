@@ -13,8 +13,8 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent }, // Dashboard route
 
   // Driver-related routes inside the dashboard
-  { path: 'dashboard/drivers', component: DriverComponent }, // List all drivers
-  { path: 'dashboard/drivers/:id', component: DriverDetailComponent }, // View driver details for CRUD operations
+  // { path: 'dashboard/drivers', component: DriverComponent }, // List all drivers
+  // { path: 'dashboard/drivers/:id', component: DriverDetailComponent }, // View driver details for CRUD operations
 
   { path: '**', redirectTo: '' } // Redirect any unknown route to home
 ];

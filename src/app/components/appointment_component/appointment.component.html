@@ -1,0 +1,58 @@
+<div class="appointment-container">
+    <h2>Appointments</h2>
+  
+    <form (ngSubmit)="createAppointment()">
+      <div>
+        <label>Company ID:</label>
+        <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required>
+      </div>
+      <div>
+        <label>Terminal ID:</label>
+        <input [(ngModel)]="appointment.terminalId" name="terminalId" required>
+      </div>
+      <div>
+        <label>Driver ID:</label>
+        <input [(ngModel)]="appointment.driverId" name="driverId" required>
+      </div>
+      <div>
+        <label>Move Type:</label>
+        <input [(ngModel)]="appointment.moveType" name="moveType" required>
+      </div>
+      <div>
+        <label>Container Number:</label>
+        <input [(ngModel)]="appointment.containerNumber" name="containerNumber" required>
+      </div>
+      <div>
+        <label>Size Type:</label>
+        <input [(ngModel)]="appointment.sizeType" name="sizeType" required>
+      </div>
+      <div>
+        <label>Line:</label>
+        <input [(ngModel)]="appointment.line" name="line" required>
+      </div>
+      <div>
+        <label>Chassis No:</label>
+        <input [(ngModel)]="appointment.chassisNo" name="chassisNo" required>
+      </div>
+      <div>
+        <label>Status:</label>
+        <input [(ngModel)]="appointment.appointmentStatus" name="appointmentStatus" required>
+      </div>
+      <div>
+        <label>Gate Code:</label>
+        <input [(ngModel)]="appointment.gateCode" name="gateCode">
+      </div>
+      <button type="submit">Create Appointment</button>
+    </form>
+  
+    <h3>Existing Appointments</h3>
+    <ul>
+        <div *ngFor="let appointment of appointments">
+            <p>{{ appointment.containerNumber }} (ID: {{ appointment.appointmentId }})</p>
+            <button (click)="deleteAppointment(appointment.appointmentId)">Delete</button>
+          </div>
+
+      
+    </ul>
+  </div>
+  

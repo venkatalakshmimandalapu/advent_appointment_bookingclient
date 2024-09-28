@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterOutlet, Router, RouterLink } from '@angular/router';  // Import Router
+import { RouterOutlet, Router, RouterLink } from '@angular/router';  
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, HttpClientModule , ReactiveFormsModule, CommonModule, RouterLink]
+    imports: [CommonModule, RouterOutlet, HttpClientModule, ReactiveFormsModule, RouterLink]
 })
 export class DashboardComponent implements OnInit {
     user: any;
@@ -19,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
-        private router: Router  // Inject Router
+        private router: Router  
     ) {}
 
     ngOnInit() {
@@ -30,7 +28,6 @@ export class DashboardComponent implements OnInit {
                 console.log('Retrieved user data from localStorage:', userData);
                 try {
                     const parsedData = JSON.parse(userData);
-                    // Directly assign parsedData to user
                     this.user = parsedData; 
                     this.userType = this.user.trCompanyName ? 'TruckingCompany' : 'Terminal';
                 } catch (error) {
@@ -46,12 +43,14 @@ export class DashboardComponent implements OnInit {
             this.user = null; 
         }
     }
-    
-    
-    
 
     // Method to navigate to the driver page
     goToDrivers() {
-        this.router.navigate(['/drivers']); // Navigate to the drivers route
+        this.router.navigate(['/drivers']); 
+    }
+
+    // Method to navigate to the create appointment page
+    createAppointment() {
+        this.router.navigate(['/appointments/create']); // Adjust the path based on your routing setup
     }
 }

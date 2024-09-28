@@ -1,4 +1,3 @@
-<!-- dashboard.component.html -->
 <div *ngIf="user">
     <h1>Welcome, {{ user.trCompanyName || user.portName }}</h1>
     <p>Email: {{ user.email }}</p>
@@ -6,6 +5,8 @@
     <div *ngIf="userType === 'TruckingCompany'">
         <p>GST No: {{ user.gstNo }}</p>
         <p>Transport License No: {{ user.transportLicNo }}</p>
+        <button (click)="createAppointment()">Create Appointment</button> <!-- Button to create appointment -->
+        <a [routerLink]="['/dashboard/drivers']">View Drivers</a> 
     </div>
 
     <div *ngIf="userType === 'Terminal'">
@@ -15,7 +16,7 @@
         <p *ngIf="user.country">Country: {{ user.country }}</p>
     </div>
 
-    <a [routerLink]="['/dashboard/drivers']">View Drivers</a> <!-- Link to View Drivers -->
+   
 </div>
 
 <router-outlet></router-outlet>

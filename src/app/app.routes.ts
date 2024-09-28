@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './components/dashboard_component/dashboard.component';
 import { DriverComponent } from './components/driver_component/driver.component'; // Import DriverComponent
 import { DriverDetailComponent } from './components/driver_component/driver-detail.component'; // Import DriverDetailComponent
+import { AppointmentComponent } from './components/appointment_component/appointment.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Home route
@@ -16,6 +17,6 @@ export const routes: Routes = [
   // Add the following routes for drivers
   { path: 'dashboard/drivers', component: DriverComponent }, // List all drivers
   { path: 'dashboard/drivers/:id', component: DriverDetailComponent }, // View driver details for CRUD
-
+  {path:'appointments/create',component:AppointmentComponent},
   { path: '**', redirectTo: '' } // Redirect any unknown route to home
 ];

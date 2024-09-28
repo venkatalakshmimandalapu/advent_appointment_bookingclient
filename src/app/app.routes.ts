@@ -7,6 +7,8 @@ import { DashboardComponent } from './components/dashboard_component/dashboard.c
 import { DriverComponent } from './components/driver_component/driver.component'; // Import DriverComponent
 import { DriverDetailComponent } from './components/driver_component/driver-detail.component'; // Import DriverDetailComponent
 import { AppointmentComponent } from './components/appointment_component/appointment.component';
+import { ViewAppointmentComponent } from './components/view-appointment_component/view_appointment.component';
+import { TerminalComponent } from './components/terminal_component/terminal.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Home route
@@ -18,5 +20,7 @@ export const routes: Routes = [
   { path: 'dashboard/drivers', component: DriverComponent }, // List all drivers
   { path: 'dashboard/drivers/:id', component: DriverDetailComponent }, // View driver details for CRUD
   {path:'appointments/create',component:AppointmentComponent},
+  {path:'appointments/view',component:ViewAppointmentComponent},
+  {path:'terminal/appointments',component:TerminalComponent},
   { path: '**', redirectTo: '' } // Redirect any unknown route to home
 ];

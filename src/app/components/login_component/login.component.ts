@@ -49,7 +49,7 @@ export class LoginComponent {
 
           // Save the token
           this.storageService.setItem('authToken', token);
-
+          
           // Save user data correctly
           localStorage.setItem('user', JSON.stringify(response.data));
           console.log('User data saved to localStorage:', response.data);
@@ -59,7 +59,10 @@ export class LoginComponent {
         },
         (error: any) => {
           console.error('Login failed', error);
-          this.errorMessage = 'Login failed. Please check your credentials.'; // Provide feedback to the user
+          // Provide feedback based on the error response
+          this.errorMessage = error.status === 401 
+            ? 'Invalid credentials. Please try again.' 
+            : 'Login failed. Invalid credentials. Please try again.';
         },
         () => {
           this.loading = false; // Reset loading state when API call is complete

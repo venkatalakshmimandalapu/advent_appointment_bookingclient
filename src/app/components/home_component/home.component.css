@@ -19,7 +19,7 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px; /* Adjusted padding for smaller screens */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -30,13 +30,12 @@ body, html {
 .navbar h1 {
   font-size: 2rem;
   font-weight: bold;
-  margin-left: 20px;
   display: flex;
   align-items: center;
 }
 
 .advent {
-  color:grey;
+  color: grey;
 }
 
 .emodal {
@@ -57,7 +56,6 @@ body, html {
   list-style: none;
   display: flex;
   gap: 15px;
-  margin-right: 20px;
 }
 
 .nav-links button {
@@ -85,7 +83,7 @@ body, html {
   height: 95vh;
   text-align: center;
   color: white; 
-  padding-top: 100px;
+  padding-top: 80px; /* Reduced padding for smaller screens */
   background-image: url(../../../assets/images/portimage.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -104,12 +102,32 @@ body, html {
     font-size: 1.5rem;
   }
 
+  .nav-links {
+    gap: 10px; /* Reduce gap for smaller screens */
+  }
+
   .nav-links button {
     padding: 8px 15px;
     font-size: 0.9rem;
   }
 
+  .home-container {
+    padding-top: 60px; /* Further reduced padding */
+  }
+
   .home-container h2 {
-    font-size: 2rem;
+    font-size: 2rem; /* Smaller font size for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container h2 {
+    font-size: 1.5rem; /* Further reduce for very small screens */
+    margin-top: 20px; /* Adjust margin for smaller screens */
+  }
+
+  .nav-links {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons */
   }
 }

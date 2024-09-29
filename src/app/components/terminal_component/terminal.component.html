@@ -7,29 +7,31 @@
     <table *ngIf="!isLoading && !errorMessage">
         <thead>
             <tr>
+                <th>Appointment ID</th>
                 <th>Move Type</th>
                 <th>Container Number</th>
                 <th>Size Type</th>
                 <th>Line</th>
                 <th>Chassis No</th>
-                <!-- <th>Status</th> -->
+                <th>Status</th>
                 <th>Gate Code</th>
-                <th>Appointment ID</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let appointment of appointments">
-                <td>{{ appointment.moveType }}</td>
-                <td>{{ appointment.containerNumber }}</td>
-                <td>{{ appointment.sizeType }}</td>
-                <td>{{ appointment.line }}</td>
-                <td>{{ appointment.chassisNo }}</td>
-                <!-- <td>{{ appointment.appointmentStatus }}</td> -->
-                <td>{{ appointment.gateCode }}</td>
-                <td>{{ appointment.appointmentId }}</td>
+                <td>{{ appointment['appointmentId'] }}</td>
+                <td>{{ appointment['moveType'] }}</td>
+                <td>{{ appointment['containerNumber'] }}</td>
+                <td>{{ appointment['sizeType'] }}</td>
+                <td>{{ appointment['line'] }}</td>
+                <td>{{ appointment['chassisNo'] }}</td>
+                <td>{{ appointment['appointmentStatus'] }}</td>
+                <td>{{ appointment['gateCode'] }}</td>
+                
                 <td>
-                    <button (click)="acceptAppointment(appointment.appointmentId)">Accept</button>
-                    <button (click)="cancelAppointment(appointment.appointmentId)">Delete</button>
+                    <button (click)="acceptAppointment(appointment['appointmentId'])">Accept</button>
+                    <button (click)="cancelAppointment(appointment['appointmentId'])">Reject</button>
                 </td>
             </tr>
         </tbody>

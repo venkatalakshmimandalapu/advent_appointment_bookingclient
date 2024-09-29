@@ -1,115 +1,123 @@
-/* General Reset */
-* {
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url('https://via.placeholder.com/1500'); /* Temporary test image */
+ /* Adjust path if needed */
+ /* Set your background image */
+    background-size: cover; /* Cover the entire background */
+    background-position: center; /* Center the background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    color: white; /* Text color for better contrast */
 }
 
-/* Ensure the background covers the entire page */
-html, body {
-    height: 100%; /* Ensure the height covers the entire viewport */
+/* Form Styles */
+form {
+    background: rgba(255, 255, 255, 0.9); /* White background with some transparency */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    background-image: url(../../../assets/images/loginpage.jpg);
-    background-repeat: no-repeat;
-    background-size: cover; /* Ensures the image covers the entire page */
-    background-position: center; /* Centers the background image */
-    background-attachment: fixed; /* Makes the background fixed */
+    max-width: 400px; /* Max width for form */
+    margin: 0 auto;
+    margin-top: 40px; /* Center the form */
 }
 
-/* Login Container */
-.login-container {
-    max-width: 400px;
-    margin: 0 auto; /* Center the container horizontally */
-    margin-right: 50px; /* Adds space on the right */
-    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%); /* Vertically centers the container */
-}
-
-/* Header */
-.login-container h2 {
-    font-size: 2.5rem;
-    color: red;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* Form Styling */
+/* Form Group Styles */
 .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 15px; /* Space between fields */
 }
 
-.form-group label {
-    font-size: 1rem;
+label {
+    display: block;
+    margin-bottom: 5px; /* Space between label and input */
     font-weight: bold;
-    color: #333;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
+input[type="email"],
+input[type="password"],
+select {
+    width: 95%; /* Full width for inputs */
     padding: 10px;
-    margin-top: 5px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #4a90e2;
-    outline: none;
-}
-
-/* Error Message */
-.error-message {
-    color: red;
-    margin-top: 5px;
-    font-size: 0.9rem;
-}
-
-/* Submit Button */
+/* Button Styles */
 .submit-button {
-    background-color: #4a90e2;
-    color: #fff;
-    padding: 12px 20px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
+    width: 50%;
+    margin-left: 100px;
+    padding: 10px;
+    background-color:  red; /* Bootstrap primary color */
+    color: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
 .submit-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    background-color: #6c757d; /* Disabled state */
 }
 
-.submit-button:hover {
-    background-color: red;
-    transform: translateY(-2px);
+.submit-button:hover:not(:disabled) {
+    background-color: white;
+    border: 1px solid red;
+    border-radius: 4px;
+    color:red /* Darker on hover */
+}
+
+/* Error Message Styles */
+.error-message {
+    color: red;
+    margin-top: 10px; /* Space above error message */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .login-container {
-        padding: 20px;
+    form {
+        padding: 15px; /* Reduce padding on smaller screens */
+        margin: 20px; /* Add some margin for smaller screens */
     }
 
-    .login-container h2 {
-        font-size: 2rem;
+    input[type="email"],
+    input[type="password"],
+    select {
+        font-size: 15px; /* Slightly smaller font size for inputs */
+    }
+
+    .submit-button {
+        font-size: 15px; /* Smaller button text */
     }
 }
+
+@media (max-width: 480px) {
+    form {
+        padding: 10px; /* Further reduce padding for very small screens */
+    }
+
+    input[type="email"],
+    input[type="password"],
+    select {
+        font-size: 14px; /* Smaller font size for inputs */
+    }
+
+    .submit-button {
+        font-size: 14px; /* Smaller button text */
+    }
+}
+h2,p{
+    text-align: center;
+}
+.login-logo {
+    display: block;
+    margin: 0 auto 20px; /* Center the image and add space below it */
+    max-width: 80%; /* Ensure the image is responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+

@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
+    styleUrl:'./dashboard.component.css',
     standalone: true,
     imports: [CommonModule, RouterOutlet, HttpClientModule, ReactiveFormsModule, RouterLink]
 })
@@ -59,4 +60,5 @@ export class DashboardComponent implements OnInit {
     ViewAppointmentsTerminal(){
         this.router.navigate(['terminal/appointments'])
     }
+    
 }

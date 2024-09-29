@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-terminal',
   templateUrl: './terminal.component.html',
+  styleUrl:'./terminal.component.css',
   standalone: true,
   imports: [CommonModule]
 })

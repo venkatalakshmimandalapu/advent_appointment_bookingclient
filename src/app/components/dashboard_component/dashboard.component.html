@@ -1,13 +1,22 @@
-<div *ngIf="user">
-    <h1>Welcome, {{ user.trCompanyName || user.portName }}</h1>
+<nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>Welcome, {{ user.trCompanyName || user.portName }}</h1>
+      </div>
+      <div class="navbar-links">
+        <a [routerLink]="['/dashboard/drivers']" *ngIf="userType === 'TruckingCompany'">View Drivers</a>
+        <button (click)="createAppointment()" *ngIf="userType === 'TruckingCompany'">Create Appointment</button>
+        <button (click)="viewAppointments()" *ngIf="userType === 'TruckingCompany'">View Appointments</button>
+        <button (click)="ViewAppointmentsTerminal()" *ngIf="userType === 'Terminal'">View Appointments</button>
+      </div>
+    </div>
+  </nav>
+  <div *ngIf="user">
     <p>Email: {{ user.email }}</p>
 
     <div *ngIf="userType === 'TruckingCompany'">
         <p>GST No: {{ user.gstNo }}</p>
         <p>Transport License No: {{ user.transportLicNo }}</p>
-        <button (click)="createAppointment()">Create Appointment</button> <!-- Button to create appointment -->
-        <a [routerLink]="['/dashboard/drivers']">View Drivers</a> 
-        <button (click)="viewAppointments()">View Appoitments</button>
     </div>
 
     <div *ngIf="userType === 'Terminal'">
@@ -15,10 +24,5 @@
         <p>City: {{ user.city }}</p>
         <p *ngIf="user.state">State: {{ user.state }}</p>
         <p *ngIf="user.country">Country: {{ user.country }}</p>
-        <button (click)="ViewAppointmentsTerminal()">View Appointments</button>
     </div>
-
-   
 </div>
-
-<router-outlet></router-outlet>

@@ -1,0 +1,72 @@
+.terminal-appointment-container {
+    background-color: white; /* White background for the container */
+    padding: 20px; /* Padding around the container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 1000px; /* Maximum width of the container */
+    margin: auto; /* Center the container */
+}
+
+h2 {
+    color: rgb(253, 99, 99); /* Red color for the heading */
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.error {
+    color: red; /* Red color for error messages */
+    text-align: center; /* Center the error message */
+    margin: 10px 0; /* Space around the error message */
+}
+
+table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Collapse borders */
+    margin-top: 10px; /* Space above the table */
+}
+
+th, td {
+    padding: 10px; /* Padding inside table cells */
+    text-align: left; /* Align text to the left */
+    border: 1px solid rgb(253, 99, 99); /* Red border for table cells */
+}
+
+th {
+    background-color: rgb(253, 99, 99); /* Red background for header */
+    color: white; /* White text for header */
+}
+
+td {
+    background-color: rgba(253, 99, 99, 0.1); /* Light red background for table rows */
+}
+
+button {
+    background-color: rgb(253, 99, 99); /* Red button background */
+    color: white; /* White text for buttons */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 10px; /* Padding inside buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-right: 5px; /* Space between buttons */
+}
+
+button:hover {
+    background-color: rgba(253, 99, 99, 0.8); /* Darker red on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    th, td {
+        padding: 8px; /* Slightly less padding on smaller screens */
+    }
+
+    button {
+        width: 100%; /* Full width buttons on small screens */
+        margin-bottom: 5px; /* Space below buttons */
+    }
+
+    table {
+        display: block; /* Make table block for scrolling */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+}

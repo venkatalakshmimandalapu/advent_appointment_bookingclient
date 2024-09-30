@@ -1,28 +1,29 @@
 <nav class="navbar">
-    <div class="container">
+  <div class="container">
       <div class="navbar-brand">
-        <h1>Welcome, {{ user.trCompanyName || user.portName }}</h1>
+          <h1>Welcome, {{ user.trCompanyName || user.portName }}</h1>
       </div>
       <div class="navbar-links">
-        <a [routerLink]="['/dashboard/drivers']" *ngIf="userType === 'TruckingCompany'">View Drivers</a>
-        <button (click)="createAppointment()" *ngIf="userType === 'TruckingCompany'">Create Appointment</button>
-        <button (click)="viewAppointments()" *ngIf="userType === 'TruckingCompany'">View Appointments</button>
-        <button (click)="ViewAppointmentsTerminal()" *ngIf="userType === 'Terminal'">View Appointments</button>
+          <a [routerLink]="['/dashboard/drivers']" *ngIf="userType === 'TruckingCompany'" class="nav-link">View Drivers</a>
+          <button (click)="createAppointment()" *ngIf="userType === 'TruckingCompany'" class="nav-button">Create Appointment</button>
+          <button (click)="viewAppointments()" *ngIf="userType === 'TruckingCompany'" class="nav-button">View Appointments</button>
+          <button (click)="ViewAppointmentsTerminal()" *ngIf="userType === 'Terminal'" class="nav-button">View Appointments</button>
       </div>
-    </div>
-  </nav>
-  <div *ngIf="user">
-    <p>Email: {{ user.email }}</p>
+  </div>
+</nav>
 
-    <div *ngIf="userType === 'TruckingCompany'">
-        <p>GST No: {{ user.gstNo }}</p>
-        <p>Transport License No: {{ user.transportLicNo }}</p>
-    </div>
+<div class="user-info" *ngIf="user">
+  <p class="user-email">Email: {{ user.email }}</p>
 
-    <div *ngIf="userType === 'Terminal'">
-        <p>Address: {{ user.address }}</p>
-        <p>City: {{ user.city }}</p>
-        <p *ngIf="user.state">State: {{ user.state }}</p>
-        <p *ngIf="user.country">Country: {{ user.country }}</p>
-    </div>
+  <div *ngIf="userType === 'TruckingCompany'" class="trucking-info">
+      <p>GST No: <strong>{{ user.gstNo }}</strong></p>
+      <p>Transport License No: <strong>{{ user.transportLicNo }}</strong></p>
+  </div>
+
+  <div *ngIf="userType === 'Terminal'" class="terminal-info">
+      <p>Address: <strong>{{ user.address }}</strong></p>
+      <p>City: <strong>{{ user.city }}</strong></p>
+      <p *ngIf="user.state">State: <strong>{{ user.state }}</strong></p>
+      <p *ngIf="user.country">Country: <strong>{{ user.country }}</strong></p>
+  </div>
 </div>

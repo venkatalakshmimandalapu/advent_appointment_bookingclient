@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
+  styleUrl: './driver-detail.component.css',
   imports:[CommonModule]
 })
 export class DriverDetailComponent implements OnInit {

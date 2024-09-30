@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+.appointment-container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between sections */
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between fields */
+}
+
+.form-group {
+    flex: 1;
+    min-width: calc(50% - 15px); /* Two fields per row with spacing */
+    margin-bottom: 15px; /* Space below each field group */
+}
+
+.form-row:nth-child(4) .form-group {
+    min-width: calc(33.33% - 15px); /* Three fields for the last row */
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Space between label and input */
+    display: block; /* Ensures label is on top of input */
+}
+
+input, select {
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 100%; /* Full width for inputs */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+input:focus, select:focus {
+    border-color: #ff4757;
+    outline: none;
+}
+
+button {
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 7px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #c0392b; /* Dark red on hover */
+}
+
+h3 {
+    margin-top: 30px;
+}
+
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+td button {
+    background-color: #ff4757;
+    border: none;
+    color: white;
+    padding: 3px 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+td button:hover {
+    background-color: #c0392b; /* Dark red on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 800px) {
+    .form-group {
+        min-width: calc(50% - 15px); /* Adjust to two fields per row */
+    }
+
+    .form-row:nth-child(4) .form-group {
+        min-width: calc(100% - 15px); /* Stack all fields on small screens */
+    }
+}
+
+@media (max-width: 500px) {
+    .appointment-container {
+        padding: 10px; /* Reduce padding on small screens */
+    }
+
+    input, select, button {
+        font-size: 0.9em; /* Smaller font size on small screens */
+    }
+
+    th, td {
+        padding: 8px; /* Reduce padding in table cells */
+    }
+
+    h2, h3 {
+        font-size: 1.2em; /* Smaller headers */
+    }
+}

@@ -1,34 +1,90 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
 .navbar {
-    background-color:rgb(253, 99, 99);
-    border: 1px red solid;
-    color:white;
-    padding: 6px;
+  background-color: #ff4757;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+.nav-button {
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #c0392b; /* Dark red on hover */
+}
+
+.user-info {
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-email {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.trucking-info, .terminal-info {
+  margin-top: 15px;
+}
+
+strong {
+  color: #333; /* Make important information stand out */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .navbar {
+      flex-direction: column;
+      align-items: flex-start;
   }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
+
   .navbar-links {
-    display: flex;
-    gap: 15px; /* Spacing between links/buttons */
+      flex-direction: column;
+      gap: 10px;
   }
-  
-  .navbar a,
-  .navbar button {
-    color:white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-  }
-  
-  .navbar a:hover,
-  .navbar button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  
+}

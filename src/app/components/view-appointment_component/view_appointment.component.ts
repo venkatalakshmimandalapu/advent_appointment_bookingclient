@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-view-appointment',
     templateUrl: './view_appointment.component.html',
     standalone: true,
-    imports: [CommonModule,FormsModule]
+    imports: [CommonModule,FormsModule],
+    styleUrl: './view_appointment.component.css'
 })
 export class ViewAppointmentComponent implements OnInit {
     appointments: any[] = []; // This will hold the appointments

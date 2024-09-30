@@ -1,64 +1,65 @@
 <div class="appointment-container">
     <h2>Appointments</h2>
 
-    <form (ngSubmit)="createAppointment()">
-        <div>
-            <label>Company ID:</label>
-            <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required>
+    <form (ngSubmit)="createAppointment()" class="appointment-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Company ID:</label>
+                <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required>
+            </div>
+            <div class="form-group">
+                <label>Terminal ID:</label>
+                <input [(ngModel)]="appointment.terminalId" name="terminalId" required>
+            </div>
         </div>
-        <div>
-            <label>Terminal ID:</label>
-            <input [(ngModel)]="appointment.terminalId" name="terminalId" required>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Driver ID:</label>
+                <input [(ngModel)]="appointment.driverId" name="driverId" required>
+            </div>
+            <div class="form-group">
+                <label>Move Type:</label>
+                <select [(ngModel)]="appointment.moveType" name="moveType" required>
+                    <option value="" disabled selected>Select Move Type</option>
+                    <option value="pick full">Pick Full</option>
+                    <option value="pick empty">Pick Empty</option>
+                    <option value="drop full">Drop Full</option>
+                    <option value="drop empty">Drop Empty</option>
+                </select>
+            </div>
         </div>
-        <div>
-            <label>Driver ID:</label>
-            <input [(ngModel)]="appointment.driverId" name="driverId" required>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Container Number:</label>
+                <input [(ngModel)]="appointment.containerNumber" name="containerNumber" required>
+            </div>
+            <div class="form-group">
+                <label>Size Type:</label>
+                <input [(ngModel)]="appointment.sizeType" name="sizeType" required>
+            </div>
         </div>
-        <div>
-            <label>Move Type:</label>
-            <select [(ngModel)]="appointment.moveType" name="moveType" required>
-                <option value="" disabled selected>Select Move Type</option>
-                <option value="pick full">Pick Full</option>
-                <option value="pick empty">Pick Empty</option>
-                <option value="drop full">Drop Full</option>
-                <option value="drop empty">Drop Empty</option>
-            </select>
-        </div>
-        <div>
-            <label>Container Number:</label>
-            <input [(ngModel)]="appointment.containerNumber" name="containerNumber" required>
-        </div>
-        <div>
-            <label>Size Type:</label>
-            <input [(ngModel)]="appointment.sizeType" name="sizeType" required>
-        </div>
-        <div>
-            <label>Line:</label>
-            <input [(ngModel)]="appointment.line" name="line" required>
-        </div>
-        <div>
-            <label>Chassis No:</label>
-            <input [(ngModel)]="appointment.chassisNo" name="chassisNo" required>
-        </div>
-        <!-- <div>
-            <label>Status:</label>
-            <input [(ngModel)]="appointment.appointmentStatus" name="appointmentStatus" required>
-        </div> -->
-        <div>
-            <label>Gate Code:</label>
-            <input [(ngModel)]="appointment.gateCode" name="gateCode">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Line:</label>
+                <input [(ngModel)]="appointment.line" name="line" required>
+            </div>
+            <div class="form-group">
+                <label>Chassis No:</label>
+                <input [(ngModel)]="appointment.chassisNo" name="chassisNo" required>
+            </div>
+            <div class="form-group">
+                <label>Gate Code:</label>
+                <input [(ngModel)]="appointment.gateCode" name="gateCode">
+            </div>
         </div>
         <button type="submit">Create Appointment</button>
     </form>
-    
+    <hr><hr><hr>
 
-    <h3>Existing Appointments</h3>
-    <table>
+    <h2>Existing Appointments</h2>
+    <table class="appointment-table">
         <thead>
             <tr>
-                <!-- <th>Company ID</th>
-                <th>Terminal ID</th>
-                <th>Driver ID</th> -->
                 <th>Appointment ID</th>
                 <th>Move Type</th>
                 <th>Container Number</th>
@@ -67,15 +68,11 @@
                 <th>Chassis No</th>
                 <th>Status</th>
                 <th>Gate Code</th>
-                
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let appointment of appointments">
-                <!-- <td>{{ appointment.trCompanyId }}</td>
-                <td>{{ appointment.terminalId }}</td>
-                <td>{{ appointment.driverId }}</td> -->
                 <td>{{ appointment.appointmentId }}</td>
                 <td>{{ appointment.moveType }}</td>
                 <td>{{ appointment.containerNumber }}</td>
@@ -84,7 +81,6 @@
                 <td>{{ appointment.chassisNo }}</td>
                 <td>{{ appointment.appointmentStatus }}</td>
                 <td>{{ appointment.gateCode }}</td>
-               
                 <td>
                     <button (click)="deleteAppointment(appointment.appointmentId)">Cancel Appointment</button>
                 </td>

@@ -37,7 +37,7 @@ th {
 }
 
 td {
-    background-color: rgba(253, 99, 99, 0.1); /* Light red background for table rows */
+    /* background-color: rgba(253, 99, 99, 0.1); Light red background for table rows */
 }
 
 button {
@@ -45,7 +45,7 @@ button {
     color: white; /* White text for buttons */
     border: none; /* No border */
     border-radius: 4px; /* Rounded corners */
-    padding: 8px 10px; /* Padding inside buttons */
+    padding: 5px 5px; /* Padding inside buttons */
     cursor: pointer; /* Pointer cursor on hover */
     margin-right: 5px; /* Space between buttons */
 }

@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-driver',
   templateUrl: './driver.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule]
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  styleUrl: './driver.component.css'
 })
 export class DriverComponent implements OnInit {
   drivers: Driver[] = [];

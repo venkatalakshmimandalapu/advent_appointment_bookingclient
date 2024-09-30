@@ -10,7 +10,8 @@ import { StorageService } from '../../../services/storage.service';
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  styleUrl: './appointment.component.css'
 })
 export class AppointmentComponent implements OnInit {
   appointments: Appointment[] = [];

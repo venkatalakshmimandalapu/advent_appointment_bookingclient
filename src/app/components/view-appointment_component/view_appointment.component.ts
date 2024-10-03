@@ -79,4 +79,8 @@ export class ViewAppointmentComponent implements OnInit {
           }
         );
       }
+
+      goHome(): void {
+        this['router'].navigate(['/dashboard']);
+      }
     }

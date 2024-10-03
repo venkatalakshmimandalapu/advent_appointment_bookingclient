@@ -52,4 +52,5 @@ export class DriverDetailComponent implements OnInit {
   navigateBack(): void {
     this.router.navigate(['/dashboard/drivers']);
   }
+
 }

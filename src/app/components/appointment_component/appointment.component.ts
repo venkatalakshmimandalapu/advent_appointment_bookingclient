@@ -1,19 +1,24 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, NgModule, OnInit, PLATFORM_ID } from '@angular/core';
 import { AppointmentService } from '../../../services/appointment.service';
 import { Appointment } from '../../../models/Appointment';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
 import { TerminalService } from '../../../services/terminal.service';
+import {  RouterModule, RouterLink } from '@angular/router';
+
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, RouterLink],
   styleUrls: ['./appointment.component.css']
 })
 export class AppointmentComponent implements OnInit {
+  [x: string]: any;
   appointments: Appointment[] = [];
   
   // Initialize appointment without trCompanyId
@@ -44,6 +49,7 @@ export class AppointmentComponent implements OnInit {
     private appointmentService: AppointmentService,
     private storageService: StorageService,
     private terminalService: TerminalService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -178,4 +184,10 @@ export class AppointmentComponent implements OnInit {
       }
     );
   }
+  goHome(): void {
+    this['router'].navigate(['/dashboard']);
+  }
+ 
 }
+
+

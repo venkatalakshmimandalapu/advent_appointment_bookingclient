@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet, Router, RouterLink } from '@angular/router';  
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,11 +14,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     imports: [CommonModule, RouterOutlet, HttpClientModule, ReactiveFormsModule, RouterLink]
 })
 export class DashboardComponent implements OnInit {
+    [x: string]: any;
     user: any;
     userType!: string;
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
+        private storageService: StorageService,
         private router: Router  
     ) {}
 
@@ -61,4 +64,11 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['terminal/appointments'])
     }
     
+    logout(): void {
+        this.router.navigate(['/login']); // Redirect to login page
+         // this.storageService.logout(); // Clear user data
+        // this.storageService.logout(); // Clear user data
+        this.storageService.removeItem('authToken',)
+        this.storageService.removeItem('user')
+}
 }

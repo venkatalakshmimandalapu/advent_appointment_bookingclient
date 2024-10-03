@@ -15,13 +15,19 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent }, // Login route
   { path: 'registration', component: RegistrationComponent }, // Registration route
   { path: 'dashboard', component: DashboardComponent }, // Dashboard route
+  // { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
 
   // Add the following routes for drivers
   { path: 'dashboard/drivers', component: DriverComponent }, // List all drivers
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'dashboard/drivers/:id', component: DriverDetailComponent }, // View driver details for CRUD
   {path:'appointments/create',component:AppointmentComponent},
+  { path: 'dashboard', component: DashboardComponent },
   {path:'appointments/view',component:ViewAppointmentComponent},
+  { path: 'dashboard', component: DashboardComponent },
   {path:'terminal/appointments',component:TerminalComponent},
-  { path: '**', redirectTo: '' } // Redirect any unknown route to home
+  { path: 'dashboard', component: DashboardComponent },
+  { path: '**', redirectTo: '/login' } // Redirect any unknown route to home
 ];
 

@@ -149,4 +149,8 @@ export class DriverComponent implements OnInit {
   private handleError(action: string, error: any): void {
     console.error(`Error ${action}:`, error);
   }
+
+  goHome(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

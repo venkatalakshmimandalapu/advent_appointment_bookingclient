@@ -1,3 +1,4 @@
+<!-- src/app/components/appointment_component/appointment.component.html -->
 <div class="appointment-container">
     <h2>Appointments</h2>
 
@@ -5,18 +6,30 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Company ID:</label>
-                <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required>
+                <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required readonly>
             </div>
+            <!-- Terminal Selection -->
+            <!-- Terminal Selection -->
             <div class="form-group">
-                <label>Terminal ID:</label>
-                <input [(ngModel)]="appointment.terminalId" name="terminalId" required>
+                <label>Terminal:</label>
+                <select [(ngModel)]="appointment.terminalId" name="terminalId" required>
+                    <option *ngFor="let terminal of terminals" [value]="terminal.terminalId">
+                        {{ terminal.portName }} <!-- Change to portName -->
+                    </option>
+                </select>
             </div>
-        </div>
-        <div class="form-row">
+
+
+            <!-- Driver Selection -->
             <div class="form-group">
-                <label>Driver ID:</label>
-                <input [(ngModel)]="appointment.driverId" name="driverId" required>
+                <label>Driver:</label>
+                <select [(ngModel)]="appointment.driverId" name="driverId" required>
+                    <option *ngFor="let driver of drivers" [value]="driver.driverId">
+                        {{ driver.driverName }}
+                    </option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label>Move Type:</label>
                 <select [(ngModel)]="appointment.moveType" name="moveType" required>
@@ -54,7 +67,7 @@
         </div>
         <button type="submit">Create Appointment</button>
     </form>
-    <hr><hr><hr>
+    <hr>
 
     <h2>Existing Appointments</h2>
     <table class="appointment-table">
@@ -87,4 +100,6 @@
             </tr>
         </tbody>
     </table>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>

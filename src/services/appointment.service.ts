@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Appointment } from '../models/Appointment';
+import { Terminal } from '../models/Terminal';
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +55,18 @@ export class AppointmentService {
 
     return this.http.put(endpoint, {}, { headers: this.getHeaders() });
 }
+// getAppointmentsByDateRange(startDate: Date, endDate: Date): Observable<Appointment[]> {
+//   return this.http.get<Appointment[]>(`${this.apiUrl}/appointments?start=${startDate.toISOString()}&end=${endDate.toISOString()}`);
+// }
+// getAllTerminals(companyId: number): Observable<Terminal[]> {
+//   return this.http.get<Terminal[]>(`/api/terminal`);
+// }
 
-  
+
+getDrivers(companyId: number): Observable<any[]> {
+  return this.http.get<any[]>(`http://localhost:5232/api/driver/trCompanyId/${companyId}`,{ headers: this.getHeaders() });
+}
+
     
     
 }

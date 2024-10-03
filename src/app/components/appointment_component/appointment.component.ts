@@ -1,23 +1,25 @@
-// src/app/components/appointment_component/appointment.component.ts
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AppointmentService } from '../../../services/appointment.service';
 import { Appointment } from '../../../models/Appointment';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
+import { TerminalService } from '../../../services/terminal.service';
 
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  styleUrl: './appointment.component.css'
+  styleUrls: ['./appointment.component.css']
 })
 export class AppointmentComponent implements OnInit {
   appointments: Appointment[] = [];
+  
+  // Initialize appointment without trCompanyId
   appointment: Appointment = {
     appointmentId: 0,
-    trCompanyId: 0,
+    trCompanyId: 0,  // Set this to 0 initially
     terminalId: 0,
     driverId: 0,
     moveType: '',
@@ -32,52 +34,98 @@ export class AppointmentComponent implements OnInit {
     gateCode: ''
   };
 
+  terminals: any[] = [];
+  drivers: any[] = [];
+  
   isLoading: boolean = false;
   errorMessage: string | null = null;
 
   constructor(
     private appointmentService: AppointmentService,
     private storageService: StorageService,
+    private terminalService: TerminalService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    this.getCompanyIdFromLocalStorage(); // Fetch company ID on init
     this.getAppointments();
+    this.loadTerminals(); // Load terminals after company ID is set
+    this.loadDrivers();
+  }
+
+  getCompanyIdFromLocalStorage(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = this.storageService.getItem('user');
+      if (userData) {
+        const { trCompanyId } = JSON.parse(userData);
+        this.appointment.trCompanyId = trCompanyId; // Set company ID here
+      } else {
+        console.error('No user data found in localStorage');
+      }
+    } else {
+      console.error('localStorage is not available');
+    }
   }
 
   getAppointments(): void {
     this.isLoading = true;
 
-    // Check if running in the browser
-    if (isPlatformBrowser(this.platformId)) {
-      const userData = this.storageService.getItem('user');
-      if (userData) {
-        const { trCompanyId } = JSON.parse(userData);
-        console.log(userData);
-        this.appointmentService.getAppointments(trCompanyId).subscribe(
-          (data) => {
-            this.appointments = data;
-            console.log('Fetched appointments:', this.appointments);
-            this.isLoading = false;
-          },
-          (error) => {
-            console.error('Error fetching appointments', error);
-            this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
-            this.isLoading = false;
-          }
-        );
-      } else {
-        console.error('No user data found in localStorage');
-        this.isLoading = false;
-      }
+    // Fetch appointments based on the company ID
+    if (this.appointment.trCompanyId) {
+      this.appointmentService.getAppointments(this.appointment.trCompanyId).subscribe(
+        (data) => {
+          this.appointments = data;
+          console.log('Fetched appointments:', this.appointments);
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error fetching appointments', error);
+          this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
+          this.isLoading = false;
+        }
+      );
     } else {
-      console.error('localStorage is not available');
+      console.error('Company ID is not set, cannot fetch appointments.');
       this.isLoading = false;
     }
   }
 
+  loadTerminals(): void {
+    if (this.appointment.trCompanyId) {
+      this.terminalService.getAllTerminals(this.appointment.trCompanyId).subscribe(
+        (data) => {
+          this.terminals = data;
+          console.log('Terminals loaded:', this.terminals);
+        },
+        (error) => {
+          console.error('Error fetching terminals', error);
+          this.errorMessage = 'Failed to fetch terminals.';
+        }
+      );
+    } else {
+      console.error('Company ID is not set, cannot load terminals.');
+    }
+  }
+
+  loadDrivers(): void {
+    if (this.appointment.trCompanyId) {
+      this.appointmentService.getDrivers(this.appointment.trCompanyId).subscribe(
+        (data) => {
+          this.drivers = data;
+          console.log('Drivers loaded:', this.drivers);
+        },
+        (error) => {
+          console.error('Error fetching drivers', error);
+          this.errorMessage = 'Failed to fetch drivers.';
+        }
+      );
+    } else {
+      console.error('Company ID is not set, cannot load drivers.');
+    }
+  }
+
   createAppointment(): void {
-    // Log the appointment data being sent
     console.log('Creating appointment with data:', this.appointment);
     
     this.appointmentService.createAppointment(this.appointment).subscribe(
@@ -88,22 +136,15 @@ export class AppointmentComponent implements OnInit {
       },
       (error) => {
         console.error('Error creating appointment', error);
-        if (error.error) {
-          console.error('Error response body:', error.error);
-          this.errorMessage = error?.error?.message || 'Failed to create appointment.';
-        } else {
-          console.error('Unexpected error:', error);
-          this.errorMessage = 'An unexpected error occurred.';
-        }
+        this.errorMessage = error?.error?.message || 'Failed to create appointment.';
       }
     );
   }
-  
 
   resetAppointment(): void {
     this.appointment = {
       appointmentId: 0,
-      trCompanyId: 0,
+      trCompanyId: this.appointment.trCompanyId, // Preserve the company ID
       terminalId: 0,
       driverId: 0,
       moveType: '',

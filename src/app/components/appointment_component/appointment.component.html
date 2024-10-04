@@ -12,7 +12,10 @@
             <!-- Terminal Selection -->
             <div class="form-group">
                 <label>Terminal:</label>
+
                 <select [(ngModel)]="appointment.terminalId" name="terminalId" required>
+                    <option value="" disabled selected>Select Terminal</option>
+
                     <option *ngFor="let terminal of terminals" [value]="terminal.terminalId">
                         {{ terminal.portName }} <!-- Change to portName -->
                     </option>
@@ -24,6 +27,7 @@
             <div class="form-group">
                 <label>Driver:</label>
                 <select [(ngModel)]="appointment.driverId" name="driverId" required>
+                    <option value="" disabled selected>Select Driver</option>
                     <option *ngFor="let driver of drivers" [value]="driver.driverId">
                         {{ driver.driverName }}
                     </option>
@@ -107,5 +111,5 @@
 
 </div>
 
-<button (click)="goHome()" class="button">Go Home</button>
+<button (click)="goHome()">Go Home</button>
 

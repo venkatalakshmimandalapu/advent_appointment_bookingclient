@@ -14,5 +14,5 @@ export interface Appointment {
     appointmentLastModified: Date;
     gateCode: string;
     isDeleted?: boolean;
-    status?: string;
+    status?: string; // Use '?' to indicate it can be undefined
 }

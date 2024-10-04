@@ -48,7 +48,7 @@
     </button>
   
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  
+    <a [routerLink]="['/forgotPassword']">Forgot Password?</a>
     <p>New user? <a [routerLink]="['/registration']">Register</a></p>
   </form>
   

@@ -5,9 +5,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
 import { TerminalService } from '../../../services/terminal.service';
-import {  RouterModule, RouterLink } from '@angular/router';
+import { Router, RouterModule, RouterLink } from '@angular/router';
 
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -49,8 +48,9 @@ export class AppointmentComponent implements OnInit {
     private appointmentService: AppointmentService,
     private storageService: StorageService,
     private terminalService: TerminalService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router  
+
   ) {}
 
   ngOnInit(): void {
@@ -185,7 +185,7 @@ export class AppointmentComponent implements OnInit {
     );
   }
   goHome(): void {
-    this['router'].navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
  
 }

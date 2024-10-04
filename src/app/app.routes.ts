@@ -9,6 +9,8 @@ import { DriverDetailComponent } from './components/driver_component/driver-deta
 import { AppointmentComponent } from './components/appointment_component/appointment.component';
 import { ViewAppointmentComponent } from './components/view-appointment_component/view_appointment.component';
 import { TerminalComponent } from './components/terminal_component/terminal.component';
+import { ForgotPasswordComponent } from './components/Forgot_Password/forgotPassword.component';
+import { ResetPasswordComponent } from './components/Forgot_Password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Home route
@@ -28,6 +30,9 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {path:'terminal/appointments',component:TerminalComponent},
   { path: 'dashboard', component: DashboardComponent },
-  { path: '**', redirectTo: '/login' } // Redirect any unknown route to home
+  
+  {path: 'forgotPassword',component:ForgotPasswordComponent},
+  {path:'resetPassword',component:ResetPasswordComponent},
+  { path: '**', redirectTo: '' } 
 ];
 

@@ -142,3 +142,11 @@ td button:hover {
         font-size: 1.2em; /* Smaller headers */
     }
 }
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+
+.invalid {
+    border-color: red;
+}

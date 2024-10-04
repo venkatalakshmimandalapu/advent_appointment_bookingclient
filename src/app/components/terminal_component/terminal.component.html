@@ -30,8 +30,13 @@
                 <td>{{ appointment['gateCode'] }}</td>
                 
                 <td>
-                    <button (click)="acceptAppointment(appointment['appointmentId'])">Accept</button>
-                    <button (click)="cancelAppointment(appointment['appointmentId'])">Reject</button>
+                    <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="acceptAppointment(appointment.appointmentId)">
+                        Accept
+                      </button>
+                      <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="cancelAppointment(appointment.appointmentId)">
+                        Cancel
+                      </button>
+
                 </td>
             </tr>
         </tbody>

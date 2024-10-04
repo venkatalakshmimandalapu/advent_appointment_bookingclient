@@ -36,7 +36,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
   getAppointments(): void {
     this.isLoading = true;
-
+  
     if (isPlatformBrowser(this.platformId)) {
       const userData = this.storageService.getItem('user');
       if (userData) {
@@ -45,7 +45,10 @@ export class TerminalComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(
             (data) => {
-              this.appointments = data.filter(appointment => !appointment.isDeleted);
+              // Ensure filtering is applied correctly
+              this.appointments = data.filter(appointment => 
+                !appointment.isDeleted && 
+                appointment.appointmentStatus !== 'Canceled');
               this.isLoading = false;
             },
             (error) => this.handleError(error)
@@ -59,6 +62,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
   }
+  
 
   acceptAppointment(appointmentId: number): void {
     this.isLoading = true;
@@ -87,22 +91,30 @@ export class TerminalComponent implements OnInit, OnDestroy {
   // Rename this method to cancelAppointment if it's meant to cancel appointments
   cancelAppointment(appointmentId: number): void {
     this.isLoading = true;
-
-    this.appointmentService.updateAppointmentStatus(appointmentId, 'canceled') // Ensure this status is correct
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-            (response) => {
-                console.log('Appointment canceled:', response);
-                // Handle successful cancellation
-                this.isLoading = false;
-            },
-            (error) => {
-                console.error('Error canceling appointment', error);
-                this.handleError(error);
-                this.isLoading = false;
-            }
-        );
-}
+  
+    this.appointmentService.updateAppointmentStatus(appointmentId, 'canceled')
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          console.log('Appointment canceled:', response);
+          this.getAppointments();
+          
+          // Update the appointment status in the array
+          const appointment = this.appointments.find(a => a.appointmentId === appointmentId);
+          if (appointment) {
+            appointment.status = 'canceled'; // Update the status
+          }
+          
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error canceling appointment', error);
+          this.handleError(error);
+          this.isLoading = false;
+        }
+      );
+  }
+  
 
 
   private handleError(error: any): void {

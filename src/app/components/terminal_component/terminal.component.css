@@ -93,3 +93,24 @@ label {
         overflow-x: auto; /* Enable horizontal scrolling */
     }
 }
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Center align pagination controls */
+}
+
+.pagination button {
+    background-color: #3498db; /* Button color for pagination */
+    color: white;
+    padding: 10px 15px; /* Padding for pagination buttons */
+    border: none;
+    border-radius: 5px; /* Rounded corners for pagination buttons */
+    margin: 0 5px; /* Space between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+}
+
+.pagination button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+    transform: scale(1.05); /* Scale effect on hover */
+}

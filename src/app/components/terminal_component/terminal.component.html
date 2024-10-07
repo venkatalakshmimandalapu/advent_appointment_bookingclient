@@ -48,6 +48,11 @@
             </tr>
         </tbody>
     </table>
+    <div *ngIf="filteredAppointments.length > 0" class="pagination">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
+    </div>
     <button (click)="goHome()" class="button">Go Home</button>
 
 </div>

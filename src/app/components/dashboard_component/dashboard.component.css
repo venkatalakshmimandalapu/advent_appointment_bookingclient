@@ -36,6 +36,16 @@ body {
   border-radius: 4px;
   transition: background-color 0.3s;
 }
+.nav-link1 {
+  background-color: red;
+  border:1px solid white;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
 
 .nav-link:hover {
   background-color: #c0392b; /* Darker red on hover */

@@ -73,7 +73,7 @@
     </form>
     <hr>
 
-    <h2>Existing Appointments</h2>
+    <!-- <h2>Existing Appointments</h2>
     <table class="appointment-table">
         <thead>
             <tr>
@@ -106,8 +106,12 @@
     </table>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
-    
+    <div *ngIf="filteredAppointments.length > 0" class="pagination">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
+    </div>
+     -->
 
 </div>
 

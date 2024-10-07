@@ -4,6 +4,9 @@
     <div *ngIf="isLoading">Loading appointments...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
+    <label for="datePicker">Select a date:</label>
+    <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="filterAppointmentsByDate()" />
+
     <table *ngIf="!isLoading && !errorMessage">
         <thead>
             <tr>
@@ -19,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let appointment of appointments">
+            <tr *ngFor="let appointment of paginatedAppointments()">
                 <td>{{ appointment['appointmentId'] }}</td>
                 <td>{{ appointment['moveType'] }}</td>
                 <td>{{ appointment['containerNumber'] }}</td>
@@ -28,17 +31,23 @@
                 <td>{{ appointment['chassisNo'] }}</td>
                 <td>{{ appointment['appointmentStatus'] }}</td>
                 <td>{{ appointment['gateCode'] }}</td>
-                
                 <td>
                     <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="acceptAppointment(appointment.appointmentId)">
                         Accept
-                      </button>
-                      <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="cancelAppointment(appointment.appointmentId)">
+                    </button>
+                    <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="cancelAppointment(appointment.appointmentId)">
                         Cancel
-                      </button>
-
+                    </button>
                 </td>
+            </tr>
+            <tr *ngIf="filteredAppointments.length === 0 && selectedDate">
+                <td colspan="9" style="text-align: center;">No appointments booked on this date.</td>
+            </tr>
+            <tr *ngIf="filteredAppointments.length === 0 && !selectedDate">
+                <td colspan="9" style="text-align: center;">No appointments available.</td>
             </tr>
         </tbody>
     </table>
+    <button (click)="goHome()" class="button">Go Home</button>
+
 </div>

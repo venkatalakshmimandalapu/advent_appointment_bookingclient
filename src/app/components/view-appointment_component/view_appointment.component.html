@@ -3,13 +3,13 @@
 
     <div *ngIf="isLoading">Loading appointments...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    
+    <label for="datePicker">Select a date:</label>
+    <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="filterAppointmentsByDate()" />
 
     <table *ngIf="!isLoading && !errorMessage">
-        <thead>
+        <thead *ngIf="filteredAppointments.length > 0">
             <tr>
-                <!-- <th>Company ID</th>
-                <th>Terminal ID</th>
-                <th>Driver ID</th> -->
                 <th>Move Type</th>
                 <th>Container Number</th>
                 <th>Size Type</th>
@@ -22,10 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let appointment of appointments">
-                <!-- <td>{{ appointment.trCompanyId }}</td>
-                <td>{{ appointment.terminalId }}</td>
-                <td>{{ appointment.driverId }}</td> -->
+            <tr *ngFor="let appointment of paginatedAppointments()">
                 <td>{{ appointment.moveType }}</td>
                 <td>{{ appointment.containerNumber }}</td>
                 <td>{{ appointment.sizeType }}</td>
@@ -38,9 +35,17 @@
                     <button (click)="deleteAppointment(appointment.appointmentId)">Cancel Appointment</button>
                 </td>
             </tr>
+            <tr *ngIf="filteredAppointments.length === 0">
+                <td colspan="9" style="text-align: center;">No appointments booked on this date.</td>
+            </tr>
         </tbody>
     </table>
+
+    <div *ngIf="filteredAppointments.length > 0" class="pagination">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
+    </div>
+    
+    <button (click)="goHome()" class="button">Go Home</button>
 </div>
-
-<button (click)="goHome()" class="button">Go Home</button>
-

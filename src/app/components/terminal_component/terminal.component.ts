@@ -5,22 +5,33 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { StorageService } from '../../../services/storage.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FormsModule, NgModel } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-terminal',
   templateUrl: './terminal.component.html',
-  styleUrl:'./terminal.component.css',
+  styleUrls: ['./terminal.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule,FormsModule]
 })
 export class TerminalComponent implements OnInit, OnDestroy {
   appointments: Appointment[] = [];
+  filteredAppointments: Appointment[] = []; 
+  selectedDate: string = ''; 
+
   isLoading: boolean = false;
   errorMessage: string | null = null;
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+
+
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     private appointmentService: AppointmentService,
+    private router: Router,
+
     private storageService: StorageService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
@@ -45,10 +56,10 @@ export class TerminalComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(
             (data) => {
-              // Ensure filtering is applied correctly
               this.appointments = data.filter(appointment => 
                 !appointment.isDeleted && 
                 appointment.appointmentStatus !== 'Canceled');
+              this.filteredAppointments = this.appointments; // Initialize filtered appointments
               this.isLoading = false;
             },
             (error) => this.handleError(error)
@@ -62,7 +73,40 @@ export class TerminalComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
   }
-  
+
+  filterAppointmentsByDate(): void {
+    if (this.selectedDate) {
+      const selected = new Date(this.selectedDate);
+      this.filteredAppointments = this.appointments.filter(appointment => {
+        const appointmentDate = new Date(appointment.appointmentCreated); // Adjust as needed
+        return appointmentDate.toDateString() === selected.toDateString();
+      });
+    } else {
+      this.filteredAppointments = this.appointments; // Reset to all if no date is selected
+    }
+    this.currentPage = 1; // Reset to first page on filter
+  }
+
+  paginatedAppointments(): Appointment[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredAppointments.slice(start, start + this.itemsPerPage);
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
 
   acceptAppointment(appointmentId: number): void {
     this.isLoading = true;
@@ -88,7 +132,6 @@ export class TerminalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Rename this method to cancelAppointment if it's meant to cancel appointments
   cancelAppointment(appointmentId: number): void {
     this.isLoading = true;
   
@@ -114,8 +157,6 @@ export class TerminalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  
-
 
   private handleError(error: any): void {
     if (error?.status === 403) {
@@ -126,5 +167,8 @@ export class TerminalComponent implements OnInit, OnDestroy {
       this.errorMessage = error?.error?.message || 'An unexpected error occurred.';
     }
     this.isLoading = false;
+  }
+  goHome(): void {
+    this['router'].navigate(['/dashboard']);
   }
 }

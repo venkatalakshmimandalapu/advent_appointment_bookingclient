@@ -40,10 +40,12 @@ export class AppointmentComponent implements OnInit {
 
   terminals: any[] = [];
   drivers: any[] = [];
-  
+  filteredAppointments: Appointment[] = []; // This will hold filtered appointments
+  selectedDate: string = ''; 
   isLoading: boolean = false;
   errorMessage: string | null = null;
-
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
   constructor(
     private appointmentService: AppointmentService,
     private storageService: StorageService,
@@ -96,7 +98,42 @@ export class AppointmentComponent implements OnInit {
       this.isLoading = false;
     }
   }
+  filterAppointmentsByDate(): void {
+    if (this.selectedDate === 'all') {
+        this.filteredAppointments = this.appointments; // Show all appointments
+    } else if (this.selectedDate) {
+        const selected = new Date(this.selectedDate);
+        this.filteredAppointments = this.appointments.filter(appointment => {
+            const appointmentDate = new Date(appointment.appointmentCreated); // Adjust as needed
+            return appointmentDate.toDateString() === selected.toDateString();
+        });
+    } else {
+        this.filteredAppointments = this.appointments; // Reset to all if no date is selected
+    }
+    this.currentPage = 1; // Reset to first page on filter
+}
 
+
+  paginatedAppointments(): Appointment[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredAppointments.slice(start, start + this.itemsPerPage);
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
   loadTerminals(): void {
     if (this.appointment.trCompanyId) {
       this.terminalService.getAllTerminals(this.appointment.trCompanyId).subscribe(

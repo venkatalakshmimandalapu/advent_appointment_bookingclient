@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
 import { TerminalService } from '../../../services/terminal.service';
 import { Router, RouterModule, RouterLink } from '@angular/router';
+import { NotificationService } from '../../../services/notification.service';
 
 
 
@@ -51,7 +52,9 @@ export class AppointmentComponent implements OnInit {
     private storageService: StorageService,
     private terminalService: TerminalService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private router: Router  
+    private router: Router,
+    public notificationService: NotificationService // Inject the service
+
 
   ) {}
 
@@ -174,6 +177,8 @@ export class AppointmentComponent implements OnInit {
     this.appointmentService.createAppointment(this.appointment).subscribe(
       (response) => {
         console.log('Appointment created successfully', response);
+        this.notificationService.addNotification('Appointment created successfully!'); // Add notification
+
         this.getAppointments();
         this.resetAppointment();
       },

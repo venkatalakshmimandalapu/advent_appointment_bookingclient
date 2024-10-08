@@ -8,9 +8,10 @@
 }
 
 h2 {
-    color: rgb(253, 99, 99); /* Red color for the heading */
+    color: #3498db; /* Red color for the heading */
     text-align: center; /* Center the heading */
-    margin-bottom: 20px; /* Space below the heading */
+    margin-bottom: 10px;
+    font-size: 2.0rem; /* Space below the heading */
 }
 
 .error {
@@ -28,11 +29,11 @@ table {
 th, td {
     padding: 10px; /* Padding inside table cells */
     text-align: left; /* Align text to the left */
-    border: 1px solid rgb(253, 99, 99); /* Red border for table cells */
+    border: 1px solid #3498db; /* Red border for table cells */
 }
 
 th {
-    background-color: rgb(253, 99, 99); /* Red background for header */
+    background-color: #3498db;/* Red background for header */
     color: white; /* White text for header */
 }
 
@@ -113,4 +114,10 @@ label {
 .pagination button:hover {
     background-color: #2980b9; /* Darker blue on hover */
     transform: scale(1.05); /* Scale effect on hover */
+}
+#accept{
+    background-color: rgb(87, 177, 87);
+}
+#cancel{
+    background-color: rgb(243, 57, 57);
 }

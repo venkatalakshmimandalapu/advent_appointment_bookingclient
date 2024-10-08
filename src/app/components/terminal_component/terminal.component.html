@@ -1,10 +1,10 @@
 <div class="terminal-appointment-container">
-    <h2>Terminal Appointments</h2>
+    <h2>View Appointments</h2>
 
     <div *ngIf="isLoading">Loading appointments...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-    <label for="datePicker">Select a date:</label>
+    <label for="datePicker">Filter Appointments:</label>
     <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="filterAppointmentsByDate()" />
 
     <table *ngIf="!isLoading && !errorMessage">
@@ -32,10 +32,10 @@
                 <td>{{ appointment['appointmentStatus'] }}</td>
                 <td>{{ appointment['gateCode'] }}</td>
                 <td>
-                    <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="acceptAppointment(appointment.appointmentId)">
+                    <button id="accept" *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="acceptAppointment(appointment.appointmentId)">
                         Accept
                     </button>
-                    <button *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="cancelAppointment(appointment.appointmentId)">
+                    <button id="cancel" *ngIf="appointment.status !== 'canceled' && appointment.status !== 'rejected'" (click)="cancelAppointment(appointment.appointmentId)">
                         Cancel
                     </button>
                 </td>

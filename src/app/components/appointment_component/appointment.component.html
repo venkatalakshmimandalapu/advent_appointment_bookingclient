@@ -1,6 +1,9 @@
 <!-- src/app/components/appointment_component/appointment.component.html -->
+<div *ngFor="let notification of notificationService.getNotifications()" class="notification">
+    {{ notification }}
+  </div>
 <div class="appointment-container">
-    <h2>Appointments</h2>
+    <h2>Book your Appointment here!!</h2>
 
     <form (ngSubmit)="createAppointment()" class="appointment-form">
         <div class="form-row">
@@ -71,7 +74,9 @@
         </div>
         <button type="submit">Create Appointment</button>
     </form>
-    <hr>
+    
+
+   
 
     <!-- <h2>Existing Appointments</h2>
     <table class="appointment-table">
@@ -114,6 +119,7 @@
      -->
 
 </div>
+
 
 <button (click)="goHome()">Go Home</button>
 

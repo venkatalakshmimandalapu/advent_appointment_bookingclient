@@ -4,7 +4,7 @@
     <div *ngIf="isLoading">Loading appointments...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     
-    <label for="datePicker">Select a date:</label>
+    <label for="datePicker">Filter Appointments:</label>
     <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="filterAppointmentsByDate()" />
 
     <table *ngIf="!isLoading && !errorMessage">

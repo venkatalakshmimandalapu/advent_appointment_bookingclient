@@ -15,13 +15,18 @@ import { Appointment } from '../../../models/Appointment'; // Adjust path as nee
   styleUrls: ['./view_appointment.component.css']
 })
 export class ViewAppointmentComponent implements OnInit {
-  appointments: Appointment[] = []; // This will hold the appointments
-  filteredAppointments: Appointment[] = []; // This will hold filtered appointments
-  selectedDate: string = ''; // Format: 'YYYY-MM-DD'
+  appointments: Appointment[] = [];
+  filteredAppointments: Appointment[] = [];
+  selectedDate: string = '';
+  selectedStatus: string = '';
   isLoading: boolean = false;
   errorMessage: string | null = null;
   currentPage: number = 1;
   itemsPerPage: number = 5;
+  sortOrder: 'asc' | 'desc' = 'asc';
+  currentSortColumn: string = '';
+  searchTerm: string = ''; // New property for search term
+
 
   constructor(
     private http: HttpClient,
@@ -29,7 +34,7 @@ export class ViewAppointmentComponent implements OnInit {
     private appointmentService: AppointmentService,
     private storageService: StorageService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getAppointments();
@@ -45,7 +50,7 @@ export class ViewAppointmentComponent implements OnInit {
         this.appointmentService.getAppointments(trCompanyId).subscribe(
           (data: Appointment[]) => {
             this.appointments = data;
-            this.filteredAppointments = this.appointments; // Initialize filtered appointments
+            this.filteredAppointments = this.appointments;
             this.isLoading = false;
           },
           (error: { error: { message: string; }; }) => {
@@ -61,22 +66,63 @@ export class ViewAppointmentComponent implements OnInit {
     }
   }
 
-  // In your ViewAppointmentComponent
+  toggleSortOrder(column: string): void {
+    if (this.currentSortColumn === column) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.currentSortColumn = column;
+      this.sortOrder = 'asc';
+    }
+    this.sortAppointments();
+  }
+
+  sortAppointments(): void {
+    this.filteredAppointments.sort((a, b) => {
+      let comparison = 0;
+  
+      if (this.currentSortColumn === 'sizeType') {
+        // Extract numeric values for comparison
+        const sizeA = this.extractSize(a.sizeType);
+        const sizeB = this.extractSize(b.sizeType);
+        comparison = sizeA - sizeB; // Compare numeric values
+      } else if (this.currentSortColumn === 'appointmentId') {
+        comparison = a.appointmentId - b.appointmentId;
+      }
+  
+      return this.sortOrder === 'asc' ? comparison : -comparison;
+    });
+  }
+  
+  // Helper method to extract numeric size value
+  private extractSize(size: string): number {
+    const match = size.match(/(\d+)/); // Match the first sequence of digits
+    return match ? parseInt(match[0], 10) : 0; // Return the numeric value or 0 if no match
+  }
+  
 
   filterAppointmentsByDate(): void {
-    if (this.selectedDate === 'all') {
-      this.filteredAppointments = this.appointments; // Show all appointments
-    } else if (this.selectedDate) {
-      const selected = new Date(this.selectedDate);
-      this.filteredAppointments = this.appointments.filter(appointment => {
-        const appointmentDate = new Date(appointment.appointmentCreated); // Adjust as needed
-        return appointmentDate.toDateString() === selected.toDateString();
-      });
-    } else {
-      this.filteredAppointments = this.appointments; // Reset to all if no date is selected
-    }
-    this.currentPage = 1; // Reset to first page on filter
+    this.applyFilters();
   }
+
+  filterAppointmentsByStatus(): void {
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    this.filteredAppointments = this.appointments.filter(appointment => {
+      const dateMatch = !this.selectedDate || new Date(appointment.appointmentCreated).toDateString() === new Date(this.selectedDate).toDateString();
+      const statusMatch = !this.selectedStatus || appointment.appointmentStatus === this.selectedStatus;
+      const searchMatch = this.searchTerm ? 
+        Object.values(appointment).some(value => 
+          String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
+        ) : true; // Check if any field matches the search term
+
+      return dateMatch && statusMatch && searchMatch;
+    });
+    this.currentPage = 1;
+    this.sortAppointments();
+  }
+
 
   paginatedAppointments(): Appointment[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -99,7 +145,6 @@ export class ViewAppointmentComponent implements OnInit {
     }
   }
 
-
   deleteAppointment(id: number): void {
     if (!id) {
       console.error('Appointment ID is not defined');
@@ -109,7 +154,7 @@ export class ViewAppointmentComponent implements OnInit {
     this.appointmentService.deleteAppointment(id).subscribe(
       (response) => {
         console.log('Appointment deleted successfully', response);
-        this.getAppointments(); // Refresh the list after deletion
+        this.getAppointments();
       },
       (error) => {
         console.error('Error deleting appointment', error);
@@ -119,6 +164,6 @@ export class ViewAppointmentComponent implements OnInit {
   }
 
   goHome(): void {
-    this['router'].navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 }

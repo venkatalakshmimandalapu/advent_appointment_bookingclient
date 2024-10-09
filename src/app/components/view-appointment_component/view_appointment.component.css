@@ -1,52 +1,115 @@
 .appointment-container {
     max-width: 1000px;
     margin: auto;
-    background: #f9f9f9; /* Slightly off-white background for contrast */
-    padding: 30px; /* Increased padding for a spacious look */
-    border-radius: 10px; /* More rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
-    transition: box-shadow 0.3s; /* Smooth shadow transition */
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s;
 }
 
 .appointment-container:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
-    color: #2c3e50; /* Darker color for better readability */
+    color: #2c3e50;
     margin-bottom: 20px;
-    font-size: 1.75em; /* Larger font size for header */
-    text-align: center; /* Center align the header */
-    font-family: 'Helvetica Neue', sans-serif; /* Modern font */
+    font-size: 1.75em;
+    text-align: center;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 .error {
-    color: #e74c3c; /* Brighter red for better visibility */
+    color: #e74c3c;
     margin-bottom: 15px;
-    text-align: center; /* Center align error messages */
-    font-weight: bold; /* Bold error messages */
-    font-size: 1.1em; /* Slightly larger font size */
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    text-align: left;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Space below the filters */
+}
+
+.filter-item {
+    flex: 1; /* Equal width for all filter items */
+    margin-right: 10px; /* Space between items */
+}
+
+.filter-item:last-child {
+    margin-right: 0; /* Remove margin from the last item */
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+    color: #aab8c2;
+    font-style: italic;
+}
+
+input[type="text"]:focus {
+    border-color: #c0392b;
+    outline: none;
+    box-shadow: 0 0 5px rgba(192, 57, 43, 0.5);
+}
+
+input[type="text"]:hover {
+    border-color: #bdc3c7;
+}
+
+input[type="date"], select {
+    width: 60%; /* Adjusted to use full width in filter item */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="date"]:focus, select:focus {
+    border-color: #c0392b;
+    outline: none;
+    box-shadow: 0 0 5px rgba(192, 57, 43, 0.5);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    font-family: Arial, sans-serif; /* Modern font */
+    font-family: Arial, sans-serif;
 }
 
 th, td {
-    padding: 12px; /* Increased padding for a cleaner look */
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #3498db; /* Blue background for header */
-    color: white; /* White text for contrast */
+    background-color: #3498db;
+    color: white;
     font-weight: bold;
-    text-transform: uppercase; /* Uppercase header text */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow below the header */
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 td {
@@ -54,97 +117,102 @@ td {
 }
 
 tr:hover {
-    background-color: #ecf0f1; /* Lighter gray for hover effect */
+    background-color: #ecf0f1;
 }
 
 td button {
-    background-color: #e74c3c; /* Bright red button */
+    background-color: #e74c3c;
     border: none;
     color: white;
-    padding: 8px 15px; /* Adjusted padding for a more substantial button */
-    border-radius: 5px; /* Slightly more rounded button corners */
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added box-shadow transition */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for buttons */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 td button:hover {
-    background-color: #c0392b; /* Dark red on hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Pagination Styles */
 .pagination {
     margin-top: 20px;
     display: flex;
-    justify-content: center; /* Center align pagination controls */
+    justify-content: center;
 }
 
 .pagination button {
-    background-color: #3498db; /* Button color for pagination */
+    background-color: #3498db;
     color: white;
-    padding: 10px 15px; /* Padding for pagination buttons */
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px; /* Rounded corners for pagination buttons */
-    margin: 0 5px; /* Space between buttons */
+    border-radius: 5px;
+    margin: 0 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .pagination button:hover {
-    background-color: #2980b9; /* Darker blue on hover */
-    transform: scale(1.05); /* Scale effect on hover */
+    background-color: #2980b9;
+    transform: scale(1.05);
 }
 
-/* Responsive Styles */
 @media (max-width: 600px) {
     th, td {
-        padding: 10px; /* Maintain decent padding on smaller screens */
+        padding: 10px;
     }
 
     th {
-        font-size: 1em; /* Slightly smaller header font size */
+        font-size: 1em;
     }
 
     td button {
-        padding: 5px 10px; /* Reduced padding for buttons on smaller screens */
-        font-size: 0.9em; /* Smaller button font size */
+        padding: 5px 10px;
+        font-size: 0.9em;
     }
 
     .pagination button {
-        padding: 8px 12px; /* Adjust pagination button size */
+        padding: 8px 12px;
     }
-}
-input[type="date"] {
-    width: 13%; /* Full width */
-    padding: 10px; /* Padding for a better look */
-    border: 1px solid #ced4da; /* Light gray border */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 1em; /* Consistent font size */
-    margin-bottom: 20px; /* Space below the input */
-    transition: border-color 0.3s ease; /* Smooth transition for border color */
-}
-
-input[type="date"]:focus {
-    border-color: #c0392b; /* Deep red border on focus */
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px rgba(192, 57, 43, 0.5); /* Subtle shadow on focus */
 }
 
 label {
-    font-size: 1em; /* Consistent font size for label */
-    margin-bottom: 10px; /* Space below label */
-    display: block; /* Block display for labels */
-    color: #495057; /* Dark gray for the label text */
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+    color: #495057;
 }
-button {
-    background-color: rgb(253, 99, 99); /* Red button background */
-    color: white; /* White text for buttons */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    padding: 5px 5px; /* Padding inside buttons */
-    cursor: pointer; /* Pointer cursor on hover */
-    margin-right: 5px;
-    margin-bottom: 2px; /* Space between buttons */
+
+/* .arrow-up::before {
+    content: '▲';
+    color: white;
+    margin-left: 5px;
+    font-size: 14px; 
 }
+
+.arrow-down::before {
+    content: '▼';
+    color: white;
+    margin-left: 5px;
+    font-size: 14px; 
+} */
+.arrow-up  ::before{
+    content: ''; /* Use content if using ::before */
+    color:black; /* Adjust color if needed */
+    margin-left: 5px;
+    font-size: 14px;
+    display: inline; /* Ensure the arrow displays inline */
+    visibility: visible;
+}
+
+.arrow-down ::before {
+    content: ''; /* Use content if using ::before */
+    color: black; /* Adjust color if needed */
+    margin-left: 5px;
+    font-size: 14px;
+    display: inline; /* Ensure the arrow displays inline */
+    visibility: visible;
+}
+

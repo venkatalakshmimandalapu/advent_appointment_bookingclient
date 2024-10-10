@@ -1,7 +1,3 @@
-<!-- src/app/components/appointment_component/appointment.component.html -->
-<div *ngFor="let notification of notificationService.getNotifications()" class="notification">
-    {{ notification }}
-  </div>
 <div class="appointment-container">
     <h2>Book your Appointment here!!</h2>
 
@@ -11,22 +7,15 @@
                 <label>Company ID:</label>
                 <input [(ngModel)]="appointment.trCompanyId" name="trCompanyId" required readonly>
             </div>
-            <!-- Terminal Selection -->
-            <!-- Terminal Selection -->
             <div class="form-group">
                 <label>Terminal:</label>
-
                 <select [(ngModel)]="appointment.terminalId" name="terminalId" required>
                     <option value="" disabled selected>Select Terminal</option>
-
                     <option *ngFor="let terminal of terminals" [value]="terminal.terminalId">
-                        {{ terminal.portName }} <!-- Change to portName -->
+                        {{ terminal.portName }}
                     </option>
                 </select>
             </div>
-
-
-            <!-- Driver Selection -->
             <div class="form-group">
                 <label>Driver:</label>
                 <select [(ngModel)]="appointment.driverId" name="driverId" required>
@@ -36,7 +25,6 @@
                     </option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Move Type:</label>
                 <select [(ngModel)]="appointment.moveType" name="moveType" required>
@@ -57,8 +45,6 @@
                 <label>Size Type:</label>
                 <input [(ngModel)]="appointment.sizeType" name="sizeType" required>
             </div>
-        </div>
-        <div class="form-row">
             <div class="form-group">
                 <label>Line:</label>
                 <input [(ngModel)]="appointment.line" name="line" required>
@@ -67,59 +53,43 @@
                 <label>Chassis No:</label>
                 <input [(ngModel)]="appointment.chassisNo" name="chassisNo" required>
             </div>
-            <div class="form-group">
-                <label>Gate Code:</label>
-                <input [(ngModel)]="appointment.gateCode" name="gateCode">
-            </div>
         </div>
         <button type="submit">Create Appointment</button>
     </form>
+
+    <!-- <h3>Your Appointments</h3>
+    <div *ngIf="isLoading">Loading appointments...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     
-
-   
-
-    <!-- <h2>Existing Appointments</h2>
-    <table class="appointment-table">
+    <table *ngIf="appointments.length > 0">
         <thead>
             <tr>
-                <th>Appointment ID</th>
+                <th>Container No</th>
                 <th>Move Type</th>
-                <th>Container Number</th>
-                <th>Size Type</th>
-                <th>Line</th>
-                <th>Chassis No</th>
-                <th>Status</th>
-                <th>Gate Code</th>
+                <th>Terminal</th>
+                <th>Driver</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let appointment of appointments">
-                <td>{{ appointment.appointmentId }}</td>
-                <td>{{ appointment.moveType }}</td>
+            <tr *ngFor="let appointment of paginatedAppointments()">
                 <td>{{ appointment.containerNumber }}</td>
-                <td>{{ appointment.sizeType }}</td>
-                <td>{{ appointment.line }}</td>
-                <td>{{ appointment.chassisNo }}</td>
-                <td>{{ appointment.appointmentStatus }}</td>
-                <td>{{ appointment.gateCode }}</td>
+                <td>{{ appointment.moveType }}</td>
+                <td>{{ getTerminalName(appointment.terminalId) }}</td>
+                <td>{{ getDriverName(appointment.driverId) }}</td>
                 <td>
-                    <button (click)="deleteAppointment(appointment.appointmentId)">Cancel Appointment</button>
+                    <button (click)="deleteAppointment(appointment.appointmentId)">Delete</button>
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
 
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <div *ngIf="filteredAppointments.length > 0" class="pagination">
+    <div *ngIf="totalPages() > 1">
         <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
         <span>Page {{ currentPage }} of {{ totalPages() }}</span>
         <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
     </div>
-     -->
 
+   
 </div>
-
-
 <button (click)="goHome()">Go Home</button>
-

@@ -29,23 +29,23 @@
     <table *ngIf="!isLoading && !errorMessage">
         <thead *ngIf="filteredAppointments.length > 0">
             <tr>
-                <th>Move Type</th>
-                <th>Container Number</th>
-                <th (click)="toggleSortOrder('sizeType')">
+                <th style="width: 12.5%;">Move Type</th>
+                <th style="width: 12.5%;">Container Number</th>
+                <th style="width: 12.5%;" (click)="toggleSortOrder('sizeType')">
                     Size Type
                     <span class="arrow-up" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'asc'">🔼</span>
                     <span class="arrow-down" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'desc'">🔽</span>
                 </th>
-                <th>Line</th>
-                <th>Chassis No</th>
-                <th>Appointment Status</th>
-                <th>Gate Code</th>
-                <th (click)="toggleSortOrder('appointmentId')">
+                <th style="width: 12.5%;">Line</th>
+                <th style="width: 12.5%;">Chassis No</th>
+                <th style="width: 12.5%;">Appointment Status</th>
+                <th style="width: 12.5%;">Gate Code</th>
+                <th style="width: 12.5%;" (click)="toggleSortOrder('appointmentId')">
                     Appointment ID
-                    <span class="arrow-up" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'asc'">🔼</span>
-                    <span class="arrow-down" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'desc'">🔽</span>
+                    <span class="arrow-up" *ngIf="currentSortColumn === 'appointmentId' && sortOrder === 'asc'">🔼</span>
+                    <span class="arrow-down" *ngIf="currentSortColumn === 'appointmentId' && sortOrder === 'desc'">🔽</span>
                 </th>
-                <th>Actions</th>
+                <th style="width: 12.5%;">Actions</th>
             </tr>
         </thead>
         
@@ -60,7 +60,7 @@
                 <td>{{ appointment.gateCode }}</td>
                 <td>{{ appointment.appointmentId }}</td>
                 <td>
-                    <button (click)="deleteAppointment(appointment.appointmentId)">Cancel Appointment</button>
+                    <button (click)="deleteAppointment(appointment.appointmentId)">Delete Appointment</button>
                 </td>
             </tr>
             <tr *ngIf="filteredAppointments.length === 0">

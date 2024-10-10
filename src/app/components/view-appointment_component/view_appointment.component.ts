@@ -6,6 +6,7 @@ import { AppointmentService } from '../../../services/appointment.service';
 import { StorageService } from '../../../services/storage.service';
 import { FormsModule } from '@angular/forms';
 import { Appointment } from '../../../models/Appointment'; // Adjust path as needed
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 @Component({
   selector: 'app-view-appointment',
@@ -26,7 +27,6 @@ export class ViewAppointmentComponent implements OnInit {
   sortOrder: 'asc' | 'desc' = 'asc';
   currentSortColumn: string = '';
   searchTerm: string = ''; // New property for search term
-
 
   constructor(
     private http: HttpClient,
@@ -81,10 +81,9 @@ export class ViewAppointmentComponent implements OnInit {
       let comparison = 0;
   
       if (this.currentSortColumn === 'sizeType') {
-        // Extract numeric values for comparison
         const sizeA = this.extractSize(a.sizeType);
         const sizeB = this.extractSize(b.sizeType);
-        comparison = sizeA - sizeB; // Compare numeric values
+        comparison = sizeA - sizeB;
       } else if (this.currentSortColumn === 'appointmentId') {
         comparison = a.appointmentId - b.appointmentId;
       }
@@ -92,13 +91,11 @@ export class ViewAppointmentComponent implements OnInit {
       return this.sortOrder === 'asc' ? comparison : -comparison;
     });
   }
-  
-  // Helper method to extract numeric size value
+
   private extractSize(size: string): number {
-    const match = size.match(/(\d+)/); // Match the first sequence of digits
-    return match ? parseInt(match[0], 10) : 0; // Return the numeric value or 0 if no match
+    const match = size.match(/(\d+)/);
+    return match ? parseInt(match[0], 10) : 0;
   }
-  
 
   filterAppointmentsByDate(): void {
     this.applyFilters();
@@ -115,14 +112,13 @@ export class ViewAppointmentComponent implements OnInit {
       const searchMatch = this.searchTerm ? 
         Object.values(appointment).some(value => 
           String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
-        ) : true; // Check if any field matches the search term
+        ) : true;
 
       return dateMatch && statusMatch && searchMatch;
     });
     this.currentPage = 1;
     this.sortAppointments();
   }
-
 
   paginatedAppointments(): Appointment[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -151,16 +147,27 @@ export class ViewAppointmentComponent implements OnInit {
       return;
     }
 
-    this.appointmentService.deleteAppointment(id).subscribe(
-      (response) => {
-        console.log('Appointment deleted successfully', response);
-        this.getAppointments();
-      },
-      (error) => {
-        console.error('Error deleting appointment', error);
-        this.errorMessage = error?.error?.message || 'Failed to delete appointment.';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this appointment?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.appointmentService.deleteAppointment(id).subscribe(
+          () => {
+            Swal.fire('Deleted!', 'Appointment deleted successfully!', 'success');
+            this.getAppointments();
+          },
+          (error) => {
+            console.error('Error deleting appointment', error);
+            this.errorMessage = error?.error?.message || 'Failed to delete appointment.';
+          }
+        );
       }
-    );
+    });
   }
 
   goHome(): void {

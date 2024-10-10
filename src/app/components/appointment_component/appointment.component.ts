@@ -6,9 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
 import { TerminalService } from '../../../services/terminal.service';
 import { Router, RouterModule, RouterLink } from '@angular/router';
-import { NotificationService } from '../../../services/notification.service';
-
-
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 @Component({
   selector: 'app-appointment',
@@ -18,13 +16,11 @@ import { NotificationService } from '../../../services/notification.service';
   styleUrls: ['./appointment.component.css']
 })
 export class AppointmentComponent implements OnInit {
-  [x: string]: any;
   appointments: Appointment[] = [];
   
-  // Initialize appointment without trCompanyId
   appointment: Appointment = {
     appointmentId: 0,
-    trCompanyId: 0,  // Set this to 0 initially
+    trCompanyId: 0,
     terminalId: 0,
     driverId: 0,
     moveType: '',
@@ -41,27 +37,25 @@ export class AppointmentComponent implements OnInit {
 
   terminals: any[] = [];
   drivers: any[] = [];
-  filteredAppointments: Appointment[] = []; // This will hold filtered appointments
+  filteredAppointments: Appointment[] = [];
   selectedDate: string = ''; 
   isLoading: boolean = false;
   errorMessage: string | null = null;
   currentPage: number = 1;
   itemsPerPage: number = 5;
+
   constructor(
     private appointmentService: AppointmentService,
     private storageService: StorageService,
     private terminalService: TerminalService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private router: Router,
-    public notificationService: NotificationService // Inject the service
-
-
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.getCompanyIdFromLocalStorage(); // Fetch company ID on init
+    this.getCompanyIdFromLocalStorage();
     this.getAppointments();
-    this.loadTerminals(); // Load terminals after company ID is set
+    this.loadTerminals();
     this.loadDrivers();
   }
 
@@ -70,7 +64,7 @@ export class AppointmentComponent implements OnInit {
       const userData = this.storageService.getItem('user');
       if (userData) {
         const { trCompanyId } = JSON.parse(userData);
-        this.appointment.trCompanyId = trCompanyId; // Set company ID here
+        this.appointment.trCompanyId = trCompanyId;
       } else {
         console.error('No user data found in localStorage');
       }
@@ -82,12 +76,10 @@ export class AppointmentComponent implements OnInit {
   getAppointments(): void {
     this.isLoading = true;
 
-    // Fetch appointments based on the company ID
     if (this.appointment.trCompanyId) {
       this.appointmentService.getAppointments(this.appointment.trCompanyId).subscribe(
         (data) => {
           this.appointments = data;
-          console.log('Fetched appointments:', this.appointments);
           this.isLoading = false;
         },
         (error) => {
@@ -101,21 +93,10 @@ export class AppointmentComponent implements OnInit {
       this.isLoading = false;
     }
   }
-  filterAppointmentsByDate(): void {
-    if (this.selectedDate === 'all') {
-        this.filteredAppointments = this.appointments; // Show all appointments
-    } else if (this.selectedDate) {
-        const selected = new Date(this.selectedDate);
-        this.filteredAppointments = this.appointments.filter(appointment => {
-            const appointmentDate = new Date(appointment.appointmentCreated); // Adjust as needed
-            return appointmentDate.toDateString() === selected.toDateString();
-        });
-    } else {
-        this.filteredAppointments = this.appointments; // Reset to all if no date is selected
-    }
-    this.currentPage = 1; // Reset to first page on filter
-}
 
+  filterAppointmentsByDate(): void {
+    // Your filter logic...
+  }
 
   paginatedAppointments(): Appointment[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -137,20 +118,18 @@ export class AppointmentComponent implements OnInit {
       this.currentPage--;
     }
   }
+
   loadTerminals(): void {
     if (this.appointment.trCompanyId) {
       this.terminalService.getAllTerminals(this.appointment.trCompanyId).subscribe(
         (data) => {
           this.terminals = data;
-          console.log('Terminals loaded:', this.terminals);
         },
         (error) => {
           console.error('Error fetching terminals', error);
           this.errorMessage = 'Failed to fetch terminals.';
         }
       );
-    } else {
-      console.error('Company ID is not set, cannot load terminals.');
     }
   }
 
@@ -159,26 +138,19 @@ export class AppointmentComponent implements OnInit {
       this.appointmentService.getDrivers(this.appointment.trCompanyId).subscribe(
         (data) => {
           this.drivers = data;
-          console.log('Drivers loaded:', this.drivers);
         },
         (error) => {
           console.error('Error fetching drivers', error);
           this.errorMessage = 'Failed to fetch drivers.';
         }
       );
-    } else {
-      console.error('Company ID is not set, cannot load drivers.');
     }
   }
 
   createAppointment(): void {
-    console.log('Creating appointment with data:', this.appointment);
-    
     this.appointmentService.createAppointment(this.appointment).subscribe(
       (response) => {
-        console.log('Appointment created successfully', response);
-        this.notificationService.addNotification('Appointment created successfully!'); // Add notification
-
+        Swal.fire('Success!', 'Appointment created successfully!', 'success'); // SweetAlert for success
         this.getAppointments();
         this.resetAppointment();
       },
@@ -192,7 +164,7 @@ export class AppointmentComponent implements OnInit {
   resetAppointment(): void {
     this.appointment = {
       appointmentId: 0,
-      trCompanyId: this.appointment.trCompanyId, // Preserve the company ID
+      trCompanyId: this.appointment.trCompanyId,
       terminalId: 0,
       driverId: 0,
       moveType: '',
@@ -206,19 +178,13 @@ export class AppointmentComponent implements OnInit {
       appointmentLastModified: new Date(),
       gateCode: ''
     };
-    this.errorMessage = null; // Reset error message
+    this.errorMessage = null;
   }
 
   deleteAppointment(id: number): void {
-    if (!id) {
-      console.error('Appointment ID is not defined');
-      return;
-    }
-
     this.appointmentService.deleteAppointment(id).subscribe(
       (response) => {
-        console.log('Appointment deleted successfully', response);
-        this.getAppointments(); // Refresh the list after deletion
+        this.getAppointments();
       },
       (error) => {
         console.error('Error deleting appointment', error);
@@ -226,10 +192,18 @@ export class AppointmentComponent implements OnInit {
       }
     );
   }
+
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }
- 
+
+  getTerminalName(terminalId: number): string {
+    const terminal = this.terminals.find(t => t.terminalId === terminalId);
+    return terminal ? terminal.portName : 'Unknown Terminal';
+  }
+
+  getDriverName(driverId: number): string {
+    const driver = this.drivers.find(d => d.driverId === driverId);
+    return driver ? driver.driverName : 'Unknown Driver';
+  }
 }
-
-

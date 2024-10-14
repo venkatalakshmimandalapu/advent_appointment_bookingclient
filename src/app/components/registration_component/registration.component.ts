@@ -1,30 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../services/registration.service';
-import { Router, RouterLink } from '@angular/router'; // Import Router
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
+import { RouterModule } from '@angular/router'; // Import RouterModule
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule], // Add imports here
 })
 export class RegistrationComponent implements OnInit {
   registrationForm!: FormGroup;
-  userType: string = 'TruckingCompany'; // Initialize userType
+  userType: string = 'TruckingCompany'; 
+  StrongPasswordRegx: RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{6,}$/;
 
   constructor(
     private fb: FormBuilder,
     private registrationService: RegistrationService,
-    private router: Router // Inject Router
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(this.StrongPasswordRegx)]],
       userType: [this.userType, Validators.required],
       TrCompanyName: [''],
       transportLicNo: [''],
@@ -36,7 +39,7 @@ export class RegistrationComponent implements OnInit {
       country: ['']
     });
 
-    this.onUserTypeChange(this.userType); // Set initial validators
+    this.onUserTypeChange(this.userType);
   }
 
   onUserTypeChange(userType: string): void {
@@ -74,6 +77,29 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.registrationForm.get(controlName);
+    if (control?.invalid && control?.touched) {
+      const errors = control.errors;
+
+      if (errors) {
+        if (errors['required']) {
+          return `${controlName} is required.`;
+        }
+        if (errors['email']) {
+          return 'Invalid email address.';
+        }
+        if (errors['minlength']) {
+          return `Minimum length is ${errors['minlength'].requiredLength} characters.`;
+        }
+        if (errors['pattern']) {
+          return 'Password should contain atleast one Uppercase,one lowercase,one digit and one special character.';
+        }
+      }
+    }
+    return '';
+  }
+
   onRegister(): void {
     if (this.registrationForm.invalid) {
       console.log("Form is invalid");
@@ -89,11 +115,10 @@ export class RegistrationComponent implements OnInit {
       this.registrationService.registerTruckingCompany(formData).subscribe(
         response => {
           console.log('Trucking Company Registered Successfully', response);
-          // Store TrCompanyId in local storage
           if (response.TrCompanyId) {
             localStorage.setItem('TrCompanyId', response.TrCompanyId);
           }
-          this.router.navigate(['/login']); // Redirect to login page
+          this.router.navigate(['/login']);
         },
         error => {
           console.error('Trucking Company Registration Failed', error);
@@ -103,7 +128,7 @@ export class RegistrationComponent implements OnInit {
       this.registrationService.registerTerminal(formData).subscribe(
         response => {
           console.log('Terminal Registered Successfully', response);
-          this.router.navigate(['/login']); // Redirect to login page
+          this.router.navigate(['/login']);
         },
         error => {
           console.error('Terminal Registration Failed', error);

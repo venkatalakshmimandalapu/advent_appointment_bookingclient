@@ -9,7 +9,7 @@ export class StorageService {
     if (typeof window !== 'undefined') {
       return localStorage.getItem(key);
     }
-    return null; // Handle SSR case here
+    return null; 
   }
 
   setItem(key: string, value: string): void {

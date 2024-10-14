@@ -7,7 +7,7 @@
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" placeholder="Enter email">
       <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" class="error-message">
-        Invalid email address.
+        {{ getErrorMessage('email') }}
       </div>
     </div>
 
@@ -16,7 +16,7 @@
       <label for="password">Password</label>
       <input id="password" type="password" formControlName="password" placeholder="Enter password">
       <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched" class="error-message">
-        Password is required and must be at least 6 characters.
+        {{ getErrorMessage('password') }}
       </div>
     </div>
 
@@ -25,19 +25,19 @@
       <label for="TrCompanyName">Company Name</label>
       <input id="TrCompanyName" type="text" formControlName="TrCompanyName" placeholder="Enter company name">
       <div *ngIf="registrationForm.get('TrCompanyName')?.invalid && registrationForm.get('TrCompanyName')?.touched" class="error-message">
-        Company name is required.
+        {{ getErrorMessage('TrCompanyName') }}
       </div>
-      
+
       <label for="transportLicNo">Transport License No</label>
       <input id="transportLicNo" type="text" formControlName="transportLicNo" placeholder="Enter Transport License No">
       <div *ngIf="registrationForm.get('transportLicNo')?.invalid && registrationForm.get('transportLicNo')?.touched" class="error-message">
-        Transport License No is required.
+        {{ getErrorMessage('transportLicNo') }}
       </div>
 
       <label for="gstNo">GST No</label>
       <input id="gstNo" type="text" formControlName="gstNo" placeholder="Enter GST No">
       <div *ngIf="registrationForm.get('gstNo')?.invalid && registrationForm.get('gstNo')?.touched" class="error-message">
-        GST No is required.
+        {{ getErrorMessage('gstNo') }}
       </div>
     </div>
 
@@ -46,47 +46,45 @@
       <label for="portName">Port Name</label>
       <input id="portName" type="text" formControlName="portName" placeholder="Enter Port Name">
       <div *ngIf="registrationForm.get('portName')?.invalid && registrationForm.get('portName')?.touched" class="error-message">
-        Port Name is required.
+        {{ getErrorMessage('portName') }}
       </div>
 
       <label for="address">Address</label>
       <input id="address" type="text" formControlName="address" placeholder="Enter Address">
       <div *ngIf="registrationForm.get('address')?.invalid && registrationForm.get('address')?.touched" class="error-message">
-        Address is required.
+        {{ getErrorMessage('address') }}
       </div>
 
       <label for="city">City</label>
       <input id="city" type="text" formControlName="city" placeholder="Enter City">
       <div *ngIf="registrationForm.get('city')?.invalid && registrationForm.get('city')?.touched" class="error-message">
-        City is required.
+        {{ getErrorMessage('city') }}
       </div>
 
       <label for="state">State</label>
       <input id="state" type="text" formControlName="state" placeholder="Enter State">
       <div *ngIf="registrationForm.get('state')?.invalid && registrationForm.get('state')?.touched" class="error-message">
-        State is required.
+        {{ getErrorMessage('state') }}
       </div>
 
       <label for="country">Country</label>
       <input id="country" type="text" formControlName="country" placeholder="Enter Country">
       <div *ngIf="registrationForm.get('country')?.invalid && registrationForm.get('country')?.touched" class="error-message">
-        Country is required.
+        {{ getErrorMessage('country') }}
       </div>
     </div>
 
     <button type="submit" [disabled]="registrationForm.invalid" class="submit-button">Register</button>
   </form>
 
-  <!-- User Type Buttons -->
   <div class="user-type-buttons">
     <button (click)="onUserTypeChange('TruckingCompany')">Register as Trucking Company</button>
     <button (click)="onUserTypeChange('Terminal')">Register as Terminal</button>
   </div>
 
-  <!-- Login Option -->
   <div class="login-option">
     <p>Already have an account? 
-    <a [routerLink] = "['/login']">Login here</a>
+    <a [routerLink]="['/login']">Login here</a>
     </p>
   </div>
 </div>

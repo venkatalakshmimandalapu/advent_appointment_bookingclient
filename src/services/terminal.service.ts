@@ -1,8 +1,8 @@
-// src/app/services/terminal.service.ts
+
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Terminal } from '../models/Terminal'; // Adjust the import path as necessary
+import { Terminal } from '../models/Terminal'; 
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class TerminalService {
     [x: string]: Object;
-  private baseUrl = 'http://localhost:5232/api/terminal'; // Base URL for terminal API
+  private baseUrl = 'http://localhost:5232/api/terminal'; 
 
   constructor(
     private http: HttpClient,
@@ -26,16 +26,13 @@ export class TerminalService {
     return headers;
   }
 
-  // Method to get all terminals for a given company
-  // src/app/services/terminal.service.ts
+  
 getAllTerminals(companyId: number): Observable<Terminal[]> {
-    return this.http.get<Terminal[]>(`${this.baseUrl}`,{ headers: this.getHeaders() }); // Make sure the endpoint matches your backend route
+    return this.http.get<Terminal[]>(`${this.baseUrl}`,{ headers: this.getHeaders() }); 
 }
 
-  // Method to create a new terminal
+ 
   createTerminal(terminal: Terminal): Observable<Terminal> {
     return this.http.post<Terminal>(this.baseUrl, terminal);
   }
-
-  // Additional methods can be added here as needed
 }

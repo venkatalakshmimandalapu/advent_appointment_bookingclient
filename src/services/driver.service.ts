@@ -9,22 +9,20 @@ import { StorageService } from './storage.service';
   providedIn: 'root',
 })
 export class DriverService {
-  private apiUrl = 'http://localhost:5232/api/driver'; // Adjust the URL as needed
+  private apiUrl = 'http://localhost:5232/api/driver'; 
 
   constructor(private http: HttpClient, private storageService: StorageService) {}
 
-  // Method to create authorization headers
   private createAuthorizationHeader(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const token = this.storageService.getItem('authToken');
-    console.log('Retrieved Token:', token); // Debug token retrieval
+    console.log('Retrieved Token:', token); 
     if (token) {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
     return headers;
   }
 
-  // Fetch all drivers
   getAllDrivers(companyId: number): Observable<Driver[]> {
     const headers = this.createAuthorizationHeader();
     return this.http.get<Driver[]>(`${this.apiUrl}/trCompanyId/${companyId}`, { headers }).pipe(
@@ -32,7 +30,6 @@ export class DriverService {
     );
   }
 
-  // Fetch a single driver by ID
   getDriver(driverId: number): Observable<Driver> {
     const headers = this.createAuthorizationHeader();
     return this.http.get<Driver>(`${this.apiUrl}/${driverId}`, { headers }).pipe(
@@ -40,7 +37,6 @@ export class DriverService {
     );
   }
 
-  // Create a new driver
   createDriver(driver: Driver): Observable<Driver> {
     const headers = this.createAuthorizationHeader();
     return this.http.post<Driver>(this.apiUrl, driver, { headers }).pipe(
@@ -48,7 +44,6 @@ export class DriverService {
     );
   }
 
-  // Update an existing driver
   updateDriver(driverId: number, driver: Driver): Observable<any> {
     const headers = this.createAuthorizationHeader();
     return this.http.put(`${this.apiUrl}/${driverId}`, driver, { headers }).pipe(
@@ -56,7 +51,6 @@ export class DriverService {
     );
   }
 
-  // Delete a driver
   deleteDriver(driverId: number): Observable<any> {
     const headers = this.createAuthorizationHeader();
     return this.http.delete(`${this.apiUrl}/${driverId}`, { headers }).pipe(
@@ -64,10 +58,9 @@ export class DriverService {
     );
   }
 
-  // Handle errors from the API response
   private handleError(error: any): Observable<never> {
-    console.error('An error occurred', error); // Log the error to console
-    const errorMessage = error.error?.message || 'Server error'; // User-friendly error message
-    return throwError(errorMessage); // Return an observable with the error message
+    console.error('An error occurred', error); 
+    const errorMessage = error.error?.message || 'Server error'; 
+    return throwError(errorMessage); 
   }
 }

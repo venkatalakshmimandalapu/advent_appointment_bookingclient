@@ -32,7 +32,8 @@ export class AppointmentComponent implements OnInit {
     appointmentCreated: new Date(),
     appointmentValidThrough: new Date(),
     appointmentLastModified: new Date(),
-    gateCode: ''
+    gateCode: '',
+    ticketNumber: '' // Added ticket number field
   };
 
   terminals: any[] = [];
@@ -94,31 +95,6 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
-  filterAppointmentsByDate(): void {
-    // Your filter logic...
-  }
-
-  paginatedAppointments(): Appointment[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredAppointments.slice(start, start + this.itemsPerPage);
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
   loadTerminals(): void {
     if (this.appointment.trCompanyId) {
       this.terminalService.getAllTerminals(this.appointment.trCompanyId).subscribe(
@@ -148,9 +124,10 @@ export class AppointmentComponent implements OnInit {
   }
 
   createAppointment(): void {
+    this.appointment.ticketNumber = this.generateTicketNumber(); 
     this.appointmentService.createAppointment(this.appointment).subscribe(
       (response) => {
-        Swal.fire('Success!', 'Appointment created successfully!', 'success'); // SweetAlert for success
+        Swal.fire('Success!', `Appointment created successfully! Your ticket number is ${this.appointment.ticketNumber}`, 'success');
         this.getAppointments();
         this.resetAppointment();
       },
@@ -159,6 +136,13 @@ export class AppointmentComponent implements OnInit {
         this.errorMessage = error?.error?.message || 'Failed to create appointment.';
       }
     );
+  }
+
+  generateTicketNumber(): string {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const randomLetters = Array.from({ length: 3 }, () => letters.charAt(Math.floor(Math.random() * letters.length))).join('');
+    const randomNumbers = Math.floor(1000 + Math.random() * 9000);
+    return `${randomLetters}${randomNumbers}`;
   }
 
   resetAppointment(): void {
@@ -176,7 +160,8 @@ export class AppointmentComponent implements OnInit {
       appointmentCreated: new Date(),
       appointmentValidThrough: new Date(),
       appointmentLastModified: new Date(),
-      gateCode: ''
+      gateCode: '',
+      ticketNumber: ''
     };
     this.errorMessage = null;
   }

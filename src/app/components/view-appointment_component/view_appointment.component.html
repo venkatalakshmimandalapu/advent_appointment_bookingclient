@@ -1,3 +1,7 @@
+<div class="app-nav"><img src="home.png" (click)="goHome()" id="homebutton" title="home">
+<img src="logout.png" (click)="logout()" id="logoutbutton" title="logout">
+</div>
+<div>
 <div class="appointment-container">
     <h2>Existing Appointments</h2>
 
@@ -29,11 +33,12 @@
     <table *ngIf="!isLoading && !errorMessage">
         <thead *ngIf="filteredAppointments.length > 0">
             <tr>
+                <th style="width:12.5%;">Ticket Number</th>
                 <th style="width: 12.5%;">Move Type</th>
                 <th style="width: 12.5%;">Container Number</th>
                 <th style="width: 12.5%;" (click)="toggleSortOrder('sizeType')">
                     Size Type
-                    <span class="arrow-up" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'asc'">🔼</span>
+                    <span class="arrow-up" *ngIf="currentSortColumn === 'sizeType' && sortOrder !== 'desc'">🔼</span>
                     <span class="arrow-down" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'desc'">🔽</span>
                 </th>
                 <th style="width: 12.5%;">Line</th>
@@ -41,8 +46,8 @@
                 <th style="width: 12.5%;">Appointment Status</th>
                 <th style="width: 12.5%;">Gate Code</th>
                 <th style="width: 12.5%;" (click)="toggleSortOrder('appointmentId')">
-                    Appointment ID
-                    <span class="arrow-up" *ngIf="currentSortColumn === 'appointmentId' && sortOrder === 'asc'">🔼</span>
+                    ApId
+                    <span class="arrow-up" *ngIf="currentSortColumn === 'appointmentId' && sortOrder !== 'desc'">🔼</span>
                     <span class="arrow-down" *ngIf="currentSortColumn === 'appointmentId' && sortOrder === 'desc'">🔽</span>
                 </th>
                 <th style="width: 12.5%;">Actions</th>
@@ -51,6 +56,8 @@
         
         <tbody>
             <tr *ngFor="let appointment of paginatedAppointments()">
+                <td>{{appointment.ticketNumber}}</td>
+
                 <td>{{ appointment.moveType }}</td>
                 <td>{{ appointment.containerNumber }}</td>
                 <td>{{ appointment.sizeType }}</td>
@@ -75,5 +82,6 @@
         <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
     </div>
 
-    <button (click)="goHome()" class="button">Go Home</button>
+    <!-- <button (click)="goHome()" class="button">Go Home</button> -->
+</div>
 </div>

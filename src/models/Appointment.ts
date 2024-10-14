@@ -15,4 +15,6 @@ export interface Appointment {
     gateCode: string;
     isDeleted?: boolean;
     status?: string; // Use '?' to indicate it can be undefined
+    ticketNumber?: string; // New field for ticket number
+
 }

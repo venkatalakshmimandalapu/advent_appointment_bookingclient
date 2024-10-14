@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 export class DriverComponent implements OnInit {
   drivers: Driver[] = [];
   driverForm: FormGroup;
-  editingDriverId: number | null = null; // To track the driver being edited
+  editingDriverId: number | null = null; 
 
   constructor(
     private driverService: DriverService,
@@ -54,7 +54,6 @@ export class DriverComponent implements OnInit {
     }
   }
 
-  // Get company ID from local storage
   private getCompanyIdFromLocalStorage(): number | null {
     const userData = this.storageService.getItem('user');
     if (userData) {
@@ -69,7 +68,6 @@ export class DriverComponent implements OnInit {
     return null;
   }
 
-  // Add a new driver
   addDriver(): void {
     if (this.driverForm.invalid) return;
 
@@ -80,7 +78,7 @@ export class DriverComponent implements OnInit {
     }
 
     const newDriver: Driver = {
-      driverId: 0, // Set to 0 or null for new driver creation
+      driverId: 0, 
       trCompanyId: companyId,
       driverName: this.driverForm.value.driverName,
       plateNo: this.driverForm.value.plateNo,
@@ -96,7 +94,6 @@ export class DriverComponent implements OnInit {
     });
   }
 
-  // Edit an existing driver
   editDriver(driver: Driver): void {
     this.editingDriverId = driver.driverId;
     this.driverForm.patchValue({
@@ -106,7 +103,6 @@ export class DriverComponent implements OnInit {
     });
   }
 
-  // Update the edited driver
   updateDriver(): void {
     if (this.driverForm.invalid || this.editingDriverId === null) return;
 
@@ -120,32 +116,29 @@ export class DriverComponent implements OnInit {
 
     this.driverService.updateDriver(this.editingDriverId, updatedDriver).subscribe({
       next: () => {
-        this.loadDrivers(); // Reload the drivers list
+        this.loadDrivers(); 
         this.resetForm();
-        this.editingDriverId = null; // Clear the editing state
+        this.editingDriverId = null; 
       },
       error: (err) => this.handleError('updating driver', err),
     });
   }
 
-  // Delete a driver
   deleteDriver(driverId: number): void {
     this.driverService.deleteDriver(driverId).subscribe({
       next: () => {
-        this.drivers = this.drivers.filter((driver) => driver.driverId !== driverId); // Remove from list
-        console.log('Driver deleted successfully'); // Debugging line
+        this.drivers = this.drivers.filter((driver) => driver.driverId !== driverId); 
+        console.log('Driver deleted successfully');
       },
       error: (err) => this.handleError('deleting driver', err),
     });
   }
 
-  // Reset the form after submission
   resetForm(): void {
     this.driverForm.reset();
     this.editingDriverId = null;
   }
 
-  // Handle errors
   private handleError(action: string, error: any): void {
     console.error(`Error ${action}:`, error);
   }

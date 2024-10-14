@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class RegistrationService {
 
-  private apiUrl = 'http://localhost:5232/api/registration'; // API endpoint for registration
+  private apiUrl = 'http://localhost:5232/api/registration'; 
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +38,7 @@ export class RegistrationService {
 
   // Create headers with JWT Bearer token
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Adjust based on where your token is stored
+    const token = localStorage.getItem('token');
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     if (token) {
       headers = headers.set('Authorization', `Bearer ${token}`);
@@ -49,9 +49,9 @@ export class RegistrationService {
   // Handle error messages from the API response
   private getErrorMessage(error: any): string {
     if (error.error && error.error.message) {
-      return error.error.message; // API specific error message
+      return error.error.message;
     } else if (error.error && error.error.errors) {
-      return Object.values(error.error.errors).join(', '); // Join validation errors
+      return Object.values(error.error.errors).join(', '); 
     } else {
       return 'An unknown error occurred.';
     }

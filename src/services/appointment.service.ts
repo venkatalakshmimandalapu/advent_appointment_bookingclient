@@ -51,17 +51,10 @@ export class AppointmentService {
   updateAppointmentStatus(appointmentId: number, status: string): Observable<any> {
     const endpoint = status === 'approved' 
         ? `${this.apiUrl}/approve/${appointmentId}`
-        : `${this.apiUrl}/cancel/${appointmentId}`; // This should match your backend
+        : `${this.apiUrl}/cancel/${appointmentId}`;
 
     return this.http.put(endpoint, {}, { headers: this.getHeaders() });
 }
-// getAppointmentsByDateRange(startDate: Date, endDate: Date): Observable<Appointment[]> {
-//   return this.http.get<Appointment[]>(`${this.apiUrl}/appointments?start=${startDate.toISOString()}&end=${endDate.toISOString()}`);
-// }
-// getAllTerminals(companyId: number): Observable<Terminal[]> {
-//   return this.http.get<Terminal[]>(`/api/terminal`);
-// }
-
 
 getDrivers(companyId: number): Observable<any[]> {
   return this.http.get<any[]>(`http://localhost:5232/api/driver/trCompanyId/${companyId}`,{ headers: this.getHeaders() });

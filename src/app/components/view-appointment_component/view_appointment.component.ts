@@ -5,8 +5,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AppointmentService } from '../../../services/appointment.service';
 import { StorageService } from '../../../services/storage.service';
 import { FormsModule } from '@angular/forms';
-import { Appointment } from '../../../models/Appointment'; // Adjust path as needed
-import Swal from 'sweetalert2'; // Import SweetAlert
+import { Appointment } from '../../../models/Appointment';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-view-appointment',
@@ -25,8 +25,8 @@ export class ViewAppointmentComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   sortOrder: 'asc' | 'desc' = 'asc';
-  currentSortColumn: string = '';
-  searchTerm: string = ''; // New property for search term
+  currentSortColumn: string = 'appointmentId';
+  searchTerm: string = '';
 
   constructor(
     private http: HttpClient,
@@ -52,6 +52,7 @@ export class ViewAppointmentComponent implements OnInit {
             this.appointments = data;
             this.filteredAppointments = this.appointments;
             this.isLoading = false;
+            
           },
           (error: { error: { message: string; }; }) => {
             this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
@@ -67,6 +68,7 @@ export class ViewAppointmentComponent implements OnInit {
   }
 
   toggleSortOrder(column: string): void {
+
     if (this.currentSortColumn === column) {
       this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     } else {
@@ -79,60 +81,67 @@ export class ViewAppointmentComponent implements OnInit {
   sortAppointments(): void {
     this.filteredAppointments.sort((a, b) => {
       let comparison = 0;
-  
+
       if (this.currentSortColumn === 'sizeType') {
         const sizeA = this.extractSize(a.sizeType);
         const sizeB = this.extractSize(b.sizeType);
         comparison = sizeA - sizeB;
       } else if (this.currentSortColumn === 'appointmentId') {
         comparison = a.appointmentId - b.appointmentId;
+      } else if (this.currentSortColumn === 'appointmentCreated') {
+        comparison = new Date(a.appointmentCreated).getTime() - new Date(b.appointmentCreated).getTime();
+      } else if (this.currentSortColumn === 'ticketNumber') {
+        comparison = (a.ticketNumber ?? '').localeCompare(b.ticketNumber ?? '');
       }
-  
+
       return this.sortOrder === 'asc' ? comparison : -comparison;
     });
   }
 
-  private extractSize(size: string): number {
-    const match = size.match(/(\d+)/);
-    return match ? parseInt(match[0], 10) : 0;
-  }
-
-  filterAppointmentsByDate(): void {
-    this.applyFilters();
-  }
-
-  filterAppointmentsByStatus(): void {
-    this.applyFilters();
+  extractSize(sizeType: string): number {
+    const sizeMap: { [key: string]: number } = {
+      '20ft': 20,
+      '40ft': 40,
+      // Add other sizes as needed
+    };
+    return sizeMap[sizeType] || 0;
   }
 
   applyFilters(): void {
-    this.filteredAppointments = this.appointments.filter(appointment => {
-      const dateMatch = !this.selectedDate || new Date(appointment.appointmentCreated).toDateString() === new Date(this.selectedDate).toDateString();
-      const statusMatch = !this.selectedStatus || appointment.appointmentStatus === this.selectedStatus;
-      const searchMatch = this.searchTerm ? 
-        Object.values(appointment).some(value => 
-          String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
-        ) : true;
+    this.filterAppointments();
+  }
 
-      return dateMatch && statusMatch && searchMatch;
-    });
-    this.currentPage = 1;
-    this.sortAppointments();
+  filterAppointmentsByDate(): void {
+    this.filterAppointments();
+  }
+
+  filterAppointmentsByStatus(): void {
+    this.filterAppointments();
+  }
+
+  filterAppointments(): void {
+    this.filteredAppointments = this.appointments.filter(appointment => {
+      const matchesDate = this.selectedDate
+        ? new Date(appointment.appointmentCreated).toISOString().substring(0, 10) === this.selectedDate
+        : true;
+
+      const matchesStatus = this.selectedStatus
+        ? appointment.appointmentStatus === this.selectedStatus
+        : true;
+
+      const matchesSearchTerm = this.searchTerm
+        ? (appointment.ticketNumber?.includes(this.searchTerm) || appointment.containerNumber.includes(this.searchTerm) || appointment.sizeType.includes(this.searchTerm)|| appointment.moveType.includes(this.searchTerm) || appointment.line.includes(this.searchTerm) || appointment.appointmentStatus.includes(this.searchTerm) || appointment.chassisNo.includes(this.searchTerm) || appointment.gateCode.includes(this.searchTerm) || appointment.appointmentId.toString().includes(this.searchTerm)
+        )
+        : true;
+
+      return matchesDate && matchesStatus && matchesSearchTerm;
+    }); 
+    this.currentPage = 1; // Reset to first page after filtering
   }
 
   paginatedAppointments(): Appointment[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredAppointments.slice(start, start + this.itemsPerPage);
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
   }
 
   previousPage(): void {
@@ -141,24 +150,30 @@ export class ViewAppointmentComponent implements OnInit {
     }
   }
 
-  deleteAppointment(id: number): void {
-    if (!id) {
-      console.error('Appointment ID is not defined');
-      return;
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
     }
+  }
 
+  totalPages(): number {
+    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
+  }
+
+  deleteAppointment(id: number): void {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you really want to delete this appointment?',
+      text: 'You will not be able to recover this appointment!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.appointmentService.deleteAppointment(id).subscribe(
-          () => {
-            Swal.fire('Deleted!', 'Appointment deleted successfully!', 'success');
+          (response) => {
+            Swal.fire('Deleted!', 'Your appointment has been deleted.', 'success');
             this.getAppointments();
           },
           (error) => {
@@ -173,4 +188,10 @@ export class ViewAppointmentComponent implements OnInit {
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }
+  logout(): void {
+    
+    this.router.navigate(['/login']); 
+    this.storageService.removeItem('authToken',)
+    this.storageService.removeItem('user')
+}
 }

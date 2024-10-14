@@ -15,8 +15,8 @@ import { StorageService } from '../../../services/storage.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  loading = false; // Loading state
-  errorMessage: string | null = null; // Error message for user feedback
+  loading = false; 
+  errorMessage: string | null = null; 
 
   constructor(
     private fb: FormBuilder,
@@ -27,14 +27,14 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      userType: ['', Validators.required]  // TruckingCompany or Terminal
+      userType: ['', Validators.required]  
     });
   }
 
   onLogin(): void {
     if (this.loginForm.valid) {
-      this.loading = true; // Set loading to true during login
-      this.errorMessage = null; // Reset error message
+      this.loading = true; 
+      this.errorMessage = null; 
 
       const { email, password, userType } = this.loginForm.value;
       this.authService.login(email, password, userType).subscribe(
@@ -42,30 +42,30 @@ export class LoginComponent {
           console.log('Login successful', response);
           const token = response.token;
           
-          // Optionally save additional user data
+          
           if (userType === 'TruckingCompany' && response.data.TrCompanyId) {
             localStorage.setItem('TrCompanyId', response.data.TrCompanyId.toString());
           }
 
-          // Save the token
+          
           this.storageService.setItem('authToken', token);
           
-          // Save user data correctly
+         
           localStorage.setItem('user', JSON.stringify(response.data));
           console.log('User data saved to localStorage:', response.data);
 
-          // Redirect to dashboard
+          
           this.router.navigate(['/dashboard']);
         },
         (error: any) => {
           console.error('Login failed', error);
-          // Provide feedback based on the error response
+          
           this.errorMessage = error.status === 401 
             ? 'Invalid credentials. Please try again.' 
             : 'Login failed. Invalid credentials. Please try again.';
         },
         () => {
-          this.loading = false; // Reset loading state when API call is complete
+          this.loading = false; 
         }
       );
     }

@@ -205,5 +205,18 @@ label {
     border-radius: 8px;
     text-align: center;
 }
-
+#homebutton,#logoutbutton{
+    width:30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+    margin-top: 10px;
+   
+}
+.app-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
   

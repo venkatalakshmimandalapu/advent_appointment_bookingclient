@@ -48,14 +48,13 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-    // Method to navigate to the driver page
+    
     goToDrivers() {
         this.router.navigate(['/drivers']); 
     }
 
-    // Method to navigate to the create appointment page
     createAppointment() {
-        this.router.navigate(['/appointments/create']); // Adjust the path based on your routing setup
+        this.router.navigate(['/appointments/create']); 
     }
     viewAppointments(){
         this.router.navigate(['/appointments/view']);
@@ -65,9 +64,7 @@ export class DashboardComponent implements OnInit {
     }
     
     logout(): void {
-        this.router.navigate(['/login']); // Redirect to login page
-         // this.storageService.logout(); // Clear user data
-        // this.storageService.logout(); // Clear user data
+        this.router.navigate(['/login']); 
         this.storageService.removeItem('authToken',)
         this.storageService.removeItem('user')
 }

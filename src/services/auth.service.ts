@@ -7,16 +7,16 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5232/api/auth';  // Adjust the base URL as necessary
+  private apiUrl = 'http://localhost:5232/api/auth';  
 
   constructor(private http: HttpClient) {}
 
   // Login method
   login(email: string, password: string, userType: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { email, password }; // Match the DTO structure
+    const body = { email, password };
 
-    // Include userType as a query parameter
+    
     return this.http.post(`${this.apiUrl}?userType=${userType}`, body, { headers })
       .pipe(
         catchError((error) => {
@@ -30,9 +30,9 @@ export class AuthService {
   }
   private getErrorMessage(error: any): string {
     if (error.error && error.error.message) {
-      return error.error.message; // API specific error message
+      return error.error.message;
     } else if (error.error && error.error.errors) {
-      return Object.values(error.error.errors).join(', '); // Join validation errors
+      return Object.values(error.error.errors).join(', '); 
     } else {
       return 'An unknown error occurred.';
     }

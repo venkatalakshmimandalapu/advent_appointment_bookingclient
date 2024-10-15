@@ -23,7 +23,7 @@ export class ViewAppointmentComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string | null = null;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 50;
   sortOrder: 'asc' | 'desc' = 'asc';
   currentSortColumn: string = 'appointmentId';
   searchTerm: string = '';

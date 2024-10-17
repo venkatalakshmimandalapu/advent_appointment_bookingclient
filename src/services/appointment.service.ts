@@ -32,7 +32,7 @@ export class AppointmentService {
   }
 
   // Get all appointments for a specific trucking company
-  getAppointments(trCompanyId: number): Observable<Appointment[]> {
+  getAppointments(trCompanyId: string, first: number, rows: number): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.apiUrl}/get-all?trCompanyId=${trCompanyId}`, { headers: this.getHeaders() });
   }
 

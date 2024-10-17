@@ -1,7 +1,8 @@
-<div class="app-nav"><img src="home.png" (click)="goHome()" id="homebutton" title="home">
-<img src="logout.png" (click)="logout()" id="logoutbutton" title="logout">
+<div class="app-nav">
+    <img src="home.png" (click)="goHome()" id="homebutton" title="home">
+    <img src="logout.png" (click)="logout()" id="logoutbutton" title="logout">
 </div>
-<div>
+
 <div class="appointment-container">
     <h2>Existing Appointments</h2>
 
@@ -16,12 +17,12 @@
 
         <div class="filter-item">
             <label for="datePicker">Filter Appointments by Date:</label>
-            <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="filterAppointmentsByDate()" />
+            <input type="date" id="datePicker" [(ngModel)]="selectedDate" (change)="applyFilters()" />
         </div>
 
         <div class="filter-item">
             <label for="statusFilter">Filter by Status:</label>
-            <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterAppointmentsByStatus()">
+            <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="applyFilters()">
                 <option value="">All</option>
                 <option value="Scheduled">Scheduled</option>
                 <option value="Approved">Approved</option>
@@ -30,34 +31,33 @@
         </div>
     </div>
 
-    <table *ngIf="!isLoading && !errorMessage">
-        <thead *ngIf="filteredAppointments.length > 0">
+    <p-table
+        [value]="filteredAppointments"
+        [paginator]="true"
+        [rows]="itemsPerPage"
+        [lazy]="true"
+        (onLazyLoad)="loadAppointments($event)"
+        [totalRecords]="totalRecords"
+        [loading]="isLoading"
+    >
+        <ng-template pTemplate="header">
             <tr>
-                <th style="width:12.5%;">Ticket Number</th>
-                <th style="width: 12.5%;">Move Type</th>
-                <th style="width: 12.5%;">Container Number</th>
-                <th style="width: 12.5%;" (click)="toggleSortOrder('sizeType')">
-                    Size Type
-                    <span class="arrow-up" *ngIf="currentSortColumn === 'sizeType' && sortOrder !== 'desc'">🔼</span>
-                    <span class="arrow-down" *ngIf="currentSortColumn === 'sizeType' && sortOrder === 'desc'">🔽</span>
-                </th>
-                <th style="width: 12.5%;">Line</th>
-                <th style="width: 12.5%;">Chassis No</th>
-                <th style="width: 12.5%;">Appointment Status</th>
-                <th style="width: 12.5%;">Gate Code</th>
-                <th style="width: 12.5%;" (click)="toggleSortOrder('appointmentId')">
-                    ApId
-                    <span class="arrow-up" *ngIf="currentSortColumn === 'appointmentId' && sortOrder !== 'desc'">🔼</span>
-                    <span class="arrow-down" *ngIf="currentSortColumn === 'appointmentId' && sortOrder === 'desc'">🔽</span>
-                </th>
-                <th style="width: 12.5%;">Actions</th>
+                <th>Ticket Number</th>
+                <th>Move Type</th>
+                <th>Container Number</th>
+                <th (click)="toggleSortOrder('sizeType')">Size Type</th>
+                <th>Line</th>
+                <th>Chassis No</th>
+                <th>Appointment Status</th>
+                <th>Gate Code</th>
+                <th (click)="toggleSortOrder('appointmentId')">ApId</th>
+                <th>Actions</th>
             </tr>
-        </thead>
+        </ng-template>
         
-        <tbody>
-            <tr *ngFor="let appointment of paginatedAppointments()">
-                <td>{{appointment.ticketNumber}}</td>
-
+        <ng-template pTemplate="body" let-appointment>
+            <tr>
+                <td>{{ appointment.ticketNumber }}</td>
                 <td>{{ appointment.moveType }}</td>
                 <td>{{ appointment.containerNumber }}</td>
                 <td>{{ appointment.sizeType }}</td>
@@ -70,18 +70,12 @@
                     <button (click)="deleteAppointment(appointment.appointmentId)">Delete Appointment</button>
                 </td>
             </tr>
-            <tr *ngIf="filteredAppointments.length === 0">
-                <td colspan="9" style="text-align: center;">No appointments available.</td>
+        </ng-template>
+        
+        <ng-template pTemplate="footer">
+            <tr *ngIf="filteredAppointments.length === 0 && !isLoading">
+                <td colspan="10" style="text-align: center;">No appointments available.</td>
             </tr>
-        </tbody>
-    </table>
-
-    <div *ngIf="filteredAppointments.length > 0" class="pagination">
-        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
-        <span>Page {{ currentPage }} of {{ totalPages() }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Next</button>
-    </div>
-
-    <!-- <button (click)="goHome()" class="button">Go Home</button> -->
-</div>
+        </ng-template>
+    </p-table>
 </div>

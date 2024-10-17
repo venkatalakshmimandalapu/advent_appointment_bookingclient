@@ -6,6 +6,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -16,7 +17,9 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [RouterOutlet, LoginComponent , HttpClientModule,MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
-    MatButtonModule,],
+    MatButtonModule,
+    TableModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

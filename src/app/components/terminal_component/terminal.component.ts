@@ -52,7 +52,10 @@ export class TerminalComponent implements OnInit, OnDestroy {
       const userData = this.storageService.getItem('user');
       if (userData) {
         const { trCompanyId } = JSON.parse(userData);
-        this.appointmentService.getAppointments(trCompanyId)
+        const first = 0; // Starting index for pagination
+        const rows = this.itemsPerPage; // Number of items per page
+  
+        this.appointmentService.getAppointments(trCompanyId, first, rows)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(
             (data) => {

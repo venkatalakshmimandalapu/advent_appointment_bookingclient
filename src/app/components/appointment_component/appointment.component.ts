@@ -55,7 +55,7 @@ export class AppointmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCompanyIdFromLocalStorage();
-    this.getAppointments();
+    // this.getAppointments();
     this.loadTerminals();
     this.loadDrivers();
   }
@@ -74,26 +74,30 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
-  getAppointments(): void {
-    this.isLoading = true;
-
-    if (this.appointment.trCompanyId) {
-      this.appointmentService.getAppointments(this.appointment.trCompanyId).subscribe(
-        (data) => {
-          this.appointments = data;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Error fetching appointments', error);
-          this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
-          this.isLoading = false;
-        }
-      );
-    } else {
-      console.error('Company ID is not set, cannot fetch appointments.');
-      this.isLoading = false;
-    }
-  }
+  // getAppointments(): void {
+  //   this.isLoading = true;
+  
+  //   if (this.appointment.trCompanyId) {
+  //     const first = 0; // Starting index for pagination
+  //     const rows = this.itemsPerPage; // Number of items per page
+  
+  //     this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
+  //       (data) => {
+  //         this.appointments = data;
+  //         this.isLoading = false;
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching appointments', error);
+  //         this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
+  //         this.isLoading = false;
+  //       }
+  //     );
+  //   } else {
+  //     console.error('Company ID is not set, cannot fetch appointments.');
+  //     this.isLoading = false;
+  //   }
+  // }
+  
 
   loadTerminals(): void {
     if (this.appointment.trCompanyId) {
@@ -128,7 +132,7 @@ export class AppointmentComponent implements OnInit {
     this.appointmentService.createAppointment(this.appointment).subscribe(
       (response) => {
         Swal.fire('Success!', `Appointment created successfully! Your ticket number is ${this.appointment.ticketNumber}`, 'success');
-        this.getAppointments();
+        // this.getAppointments();
         this.resetAppointment();
       },
       (error) => {
@@ -169,7 +173,7 @@ export class AppointmentComponent implements OnInit {
   deleteAppointment(id: number): void {
     this.appointmentService.deleteAppointment(id).subscribe(
       (response) => {
-        this.getAppointments();
+        // this.getAppointments();
       },
       (error) => {
         console.error('Error deleting appointment', error);

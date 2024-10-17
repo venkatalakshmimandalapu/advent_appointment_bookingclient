@@ -7,12 +7,13 @@ import { StorageService } from '../../../services/storage.service';
 import { FormsModule } from '@angular/forms';
 import { Appointment } from '../../../models/Appointment';
 import Swal from 'sweetalert2'; 
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-view-appointment',
   templateUrl: './view_appointment.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TableModule],
   styleUrls: ['./view_appointment.component.css']
 })
 export class ViewAppointmentComponent implements OnInit {
@@ -22,11 +23,12 @@ export class ViewAppointmentComponent implements OnInit {
   selectedStatus: string = '';
   isLoading: boolean = false;
   errorMessage: string | null = null;
-  currentPage: number = 1;
-  itemsPerPage: number = 50;
   sortOrder: 'asc' | 'desc' = 'asc';
   currentSortColumn: string = 'appointmentId';
   searchTerm: string = '';
+  totalRecords: number = 0; 
+  itemsPerPage: number = 5; 
+
 
   constructor(
     private http: HttpClient,
@@ -42,19 +44,29 @@ export class ViewAppointmentComponent implements OnInit {
 
   getAppointments(): void {
     this.isLoading = true;
-
     if (isPlatformBrowser(this.platformId)) {
       const userData = this.storageService.getItem('user');
       if (userData) {
         const { trCompanyId } = JSON.parse(userData);
-        this.appointmentService.getAppointments(trCompanyId).subscribe(
-          (data: Appointment[]) => {
-            this.appointments = data;
-            this.filteredAppointments = this.appointments;
+        const first = 0;
+        const rows = 5; 
+  
+        this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
+          (data: any) => {
+            console.log('Fetched appointments:', data);
+            if (data && Array.isArray(data.appointments)) {
+              this.appointments = data.appointments;
+              this.filteredAppointments = this.appointments; 
+              this.totalRecords = data.totalCount; 
+            } else {
+              console.error('Expected an array but received:', data);
+              this.appointments = [];
+              this.filteredAppointments = [];
+              this.totalRecords = 0; 
+            }
             this.isLoading = false;
-            
           },
-          (error: { error: { message: string; }; }) => {
+          (error) => {
             this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
             this.isLoading = false;
           }
@@ -66,9 +78,49 @@ export class ViewAppointmentComponent implements OnInit {
       this.isLoading = false;
     }
   }
+  
+  loadAppointments($event: TableLazyLoadEvent): void {
+    this.isLoading = true;
+    console.log('First:', $event.first, 'Rows:', $event.rows);
 
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = this.storageService.getItem('user');
+      if (userData) {
+        const { trCompanyId } = JSON.parse(userData);
+        const first = $event.first || 0;
+        const rows = $event.rows || this.itemsPerPage;
+  
+        this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
+          (data: any) => {
+            console.log('Fetched appointments on lazy load:', data);
+            if (data && Array.isArray(data.appointments)) {
+              this.appointments = data.appointments;
+              this.filteredAppointments = this.appointments; 
+              this.totalRecords = data.totalCount; 
+            } else {
+              console.error('Expected an array but received:', data);
+              this.appointments = [];
+              this.filteredAppointments = [];
+              this.totalRecords = 0; 
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
+            this.isLoading = false;
+
+            
+          }
+        );
+      } else {
+        this.isLoading = false;
+      }
+    } else {
+      this.isLoading = false;
+    }
+  }
+  
   toggleSortOrder(column: string): void {
-
     if (this.currentSortColumn === column) {
       this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     } else {
@@ -102,7 +154,6 @@ export class ViewAppointmentComponent implements OnInit {
     const sizeMap: { [key: string]: number } = {
       '20ft': 20,
       '40ft': 40,
-      // Add other sizes as needed
     };
     return sizeMap[sizeType] || 0;
   }
@@ -130,34 +181,19 @@ export class ViewAppointmentComponent implements OnInit {
         : true;
 
       const matchesSearchTerm = this.searchTerm
-        ? (appointment.ticketNumber?.includes(this.searchTerm) || appointment.containerNumber.includes(this.searchTerm) || appointment.sizeType.includes(this.searchTerm)|| appointment.moveType.includes(this.searchTerm) || appointment.line.includes(this.searchTerm) || appointment.appointmentStatus.includes(this.searchTerm) || appointment.chassisNo.includes(this.searchTerm) || appointment.gateCode.includes(this.searchTerm) || appointment.appointmentId.toString().includes(this.searchTerm)
-        )
+        ? (appointment.ticketNumber?.includes(this.searchTerm) || 
+           appointment.containerNumber.includes(this.searchTerm) || 
+           appointment.sizeType.includes(this.searchTerm) || 
+           appointment.moveType.includes(this.searchTerm) || 
+           appointment.line.includes(this.searchTerm) || 
+           appointment.appointmentStatus.includes(this.searchTerm) || 
+           appointment.chassisNo.includes(this.searchTerm) || 
+           appointment.gateCode.includes(this.searchTerm) || 
+           appointment.appointmentId.toString().includes(this.searchTerm))
         : true;
 
       return matchesDate && matchesStatus && matchesSearchTerm;
-    }); 
-    this.currentPage = 1; // Reset to first page after filtering
-  }
-
-  paginatedAppointments(): Appointment[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredAppointments.slice(start, start + this.itemsPerPage);
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.filteredAppointments.length / this.itemsPerPage);
+    });
   }
 
   deleteAppointment(id: number): void {
@@ -188,10 +224,10 @@ export class ViewAppointmentComponent implements OnInit {
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }
+
   logout(): void {
-    
     this.router.navigate(['/login']); 
-    this.storageService.removeItem('authToken',)
-    this.storageService.removeItem('user')
-}
+    this.storageService.removeItem('authToken');
+    this.storageService.removeItem('user');
+  }
 }

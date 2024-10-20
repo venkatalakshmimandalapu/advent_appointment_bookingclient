@@ -32,9 +32,10 @@ export class AppointmentService {
   }
 
   // Get all appointments for a specific trucking company
-  getAppointments(trCompanyId: string, first: number, rows: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/get-all?trCompanyId=${trCompanyId}`, { headers: this.getHeaders() });
+  getAppointments(trCompanyId: string, first: number, rows: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-all?trCompanyId=${trCompanyId}&first=${first}&rows=${rows}`,{ headers: this.getHeaders() });
   }
+  
 
   // Update an existing appointment
   updateAppointment(appointmentId: number, appointment: Appointment): Observable<any> {
@@ -47,7 +48,7 @@ export class AppointmentService {
   }
 
   // Get appointments by terminal ID
-  getAppointmentsByTerminal(terminalId: number): Observable<Appointment[]> {
+  getAppointmentsByTerminal(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.apiUrl}/get-all-terminal`, { headers: this.getHeaders() });
   }
 

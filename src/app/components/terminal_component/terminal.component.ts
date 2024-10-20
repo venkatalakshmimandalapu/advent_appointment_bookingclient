@@ -37,7 +37,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getAppointments();
+    this.getAppointmentsByTerminal();
   }
 
   ngOnDestroy(): void {
@@ -45,7 +45,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  getAppointments(): void {
+  getAppointmentsByTerminal(): void {
     this.isLoading = true;
   
     if (isPlatformBrowser(this.platformId)) {
@@ -55,7 +55,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
         const first = 0; // Starting index for pagination
         const rows = this.itemsPerPage; // Number of items per page
   
-        this.appointmentService.getAppointments(trCompanyId, first, rows)
+        this.appointmentService.getAppointmentsByTerminal()
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(
             (data) => {
@@ -124,7 +124,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
         .subscribe(
           (response) => {
             console.log('Appointment approved:', response);
-            this.getAppointments(); // Refresh appointments
+            this.getAppointmentsByTerminal(); // Refresh appointments
           },
           (error) => {
             console.error('Error approving appointment', error);
@@ -143,7 +143,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           console.log('Appointment canceled:', response);
-          this.getAppointments();
+          this.getAppointmentsByTerminal();
           
           // Update the appointment status in the array
           const appointment = this.appointments.find(a => a.appointmentId === appointmentId);

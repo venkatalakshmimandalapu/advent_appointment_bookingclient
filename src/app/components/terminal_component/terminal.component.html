@@ -10,6 +10,7 @@
     <table *ngIf="!isLoading && !errorMessage">
         <thead>
             <tr>
+                <!-- <th>Ticket Number</th> -->
                 <th>Appointment ID</th>
                 <th>Move Type</th>
                 <th>Container Number</th>
@@ -23,6 +24,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let appointment of paginatedAppointments()">
+                <!-- <td>{{appointment.ticketNumber}}</td> -->
                 <td>{{ appointment['appointmentId'] }}</td>
                 <td>{{ appointment['moveType'] }}</td>
                 <td>{{ appointment['containerNumber'] }}</td>

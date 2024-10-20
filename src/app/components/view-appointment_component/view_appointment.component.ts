@@ -51,8 +51,7 @@ export class ViewAppointmentComponent implements OnInit {
         const first = 0;
         const rows = 5; 
   
-        this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
-          (data: any) => {
+        this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(          (data: any) => {
             console.log('Fetched appointments:', data);
             if (data && Array.isArray(data.appointments)) {
               this.appointments = data.appointments;
@@ -84,41 +83,43 @@ export class ViewAppointmentComponent implements OnInit {
     console.log('First:', $event.first, 'Rows:', $event.rows);
 
     if (isPlatformBrowser(this.platformId)) {
-      const userData = this.storageService.getItem('user');
-      if (userData) {
-        const { trCompanyId } = JSON.parse(userData);
-        const first = $event.first || 0;
-        const rows = $event.rows || this.itemsPerPage;
-  
-        this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
-          (data: any) => {
-            console.log('Fetched appointments on lazy load:', data);
-            if (data && Array.isArray(data.appointments)) {
-              this.appointments = data.appointments;
-              this.filteredAppointments = this.appointments; 
-              this.totalRecords = data.totalCount; 
-            } else {
-              console.error('Expected an array but received:', data);
-              this.appointments = [];
-              this.filteredAppointments = [];
-              this.totalRecords = 0; 
-            }
-            this.isLoading = false;
-          },
-          (error) => {
-            this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
-            this.isLoading = false;
+        const userData = this.storageService.getItem('user');
+        if (userData) {
+            const { trCompanyId } = JSON.parse(userData);
+            const first = $event.first || 0;
+            const rows = $event.rows || this.itemsPerPage;
 
-            
-          }
-        );
-      } else {
-        this.isLoading = false;
-      }
+            this.appointmentService.getAppointments(trCompanyId, first, rows).subscribe(
+                (data: any) => {
+                    console.log('Fetched appointments on lazy load:', data);
+                    if (data && Array.isArray(data.appointments)) {
+                        this.appointments = data.appointments;
+                        this.filteredAppointments = this.appointments; 
+                        this.totalRecords = data.total; // Ensure this matches the backend response
+                    } else {
+                        console.error('Expected an array but received:', data);
+                        this.appointments = [];
+                        this.filteredAppointments = [];
+                        this.totalRecords = 0; 
+                    }
+                    this.isLoading = false;
+                },
+                (error) => {
+                    this.errorMessage = error?.error?.message || 'Failed to fetch appointments.';
+                    console.error('Error fetching appointments:', error); // Log the error for debugging
+                    this.isLoading = false;
+                }
+            );
+        } else {
+            this.errorMessage = 'User data not found.';
+            this.isLoading = false;
+        }
     } else {
-      this.isLoading = false;
+        this.errorMessage = 'Not running in a browser context.';
+        this.isLoading = false;
     }
-  }
+}
+
   
   toggleSortOrder(column: string): void {
     if (this.currentSortColumn === column) {
